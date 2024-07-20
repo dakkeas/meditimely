@@ -37,6 +37,7 @@ export default function LandingScreen() {
                     title={"Login"}
                     buttonStyle={[{
                         backgroundColor: "white",
+                        marginTop: 10,
                     }, styles.buttonLayout]}
                     
                     textStyle={{
@@ -79,10 +80,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: "center"
     },
-    buttonLayout: {
-        
-    }
-    
+
 
 
 

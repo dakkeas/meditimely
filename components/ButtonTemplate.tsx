@@ -18,7 +18,7 @@ export default function ButtonTemplate({
         return null
     }
     return (
-        <View style={styles.container}>
+        <View style={styles.buttonContainer}>
            <TouchableOpacity 
            title={title} 
            style = {[styles.button, buttonStyle]}
@@ -33,11 +33,6 @@ export default function ButtonTemplate({
 }
 
 const styles = StyleSheet.create({
-    box: {
-        height: 100,
-        width: 200,
-        padding: 20,
-    },
     button: {
         backgroundColor: "#EEEEEE",
         borderRadius: 3,
@@ -45,7 +40,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         display: "flex",
-        marginTop: 10,
     },
     text: {
         fontFamily: "Poppins_600SemiBold",

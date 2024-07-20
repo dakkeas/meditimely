@@ -18,8 +18,11 @@ function SignUpStack() {
         <Stack.Navigator
         screenOptions={{
             headerStyle: {
-                
-            }
+                backgroundColor: "#1F9FA2",
+            },
+            headerTitle: "",
+            headerTintColor: "white"
+            
         }}
         >
             <Stack.Screen 
@@ -27,15 +30,26 @@ function SignUpStack() {
             
             component={SignUpEmailScreen} 
             options= {{
-                headerStyle: {
-                    backgroundColor: "#1F9FA2",
-                },
                 headerTitle: "",
                 headerLeft: () => <TouchableOpacity onPress={() => navigation.navigate("Welcome")}><Text style={styles.headerBackText}>Cancel</Text></TouchableOpacity>
                 
             }}
             />
-            <Stack.Screen name="Info Sign Up" component={SignUpInfoScreen} />
+            <Stack.Screen 
+            name="Info Sign Up"
+            component={SignUpInfoScreen}
+            options={{
+                headerTitle: "Profile",
+                headerTitleAlign: "center",
+                headerTitleStyle: {
+                    fontFamily: "Poppins_600SemiBold",
+                    fontSize: 16,
+                },
+
+            }}
+        
+        
+            />
         </Stack.Navigator>
     );
 }
