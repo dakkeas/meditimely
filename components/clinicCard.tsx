@@ -77,7 +77,7 @@ const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
     cardContainer: {
         height: 240,
-        backgroundColor: "whitesmoke",
+        backgroundColor: "white",
         width: "80%",
         borderRadius: 10,
         padding: 10
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     boxShadow: {
         shadowColor: '#000',
-        elevation: 10,
+        elevation: 2,
         
     }
 
