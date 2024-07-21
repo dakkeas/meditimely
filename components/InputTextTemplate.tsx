@@ -6,6 +6,8 @@ export default function InputTextTemplate({
     placeholder,
     label,
     onChangeText,
+    inputStyle,
+    editable
     
 }) {
     const [fontsLoaded] = useFonts({
@@ -32,11 +34,11 @@ export default function InputTextTemplate({
             <Text style={styles.labelText}>{label}</Text>
             <TextInput
             placeholder={placeholder}
-            style = {styles.inputField}
+            style = {[styles.inputField, inputStyle]}
             value={text}
             onChangeText={handleChangeText}
             autoCapitalize="none"
-            
+            editable= {editable}
             ></TextInput>
         </SafeAreaView>
     )
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     },
 
     inputField: {
+        
         marginBottom: 10,
         height: 50,
         padding: 10,

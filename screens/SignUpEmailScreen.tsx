@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginBottom: 20,
+        marginBottom: 15,
         fontFamily: "Poppins_700Bold"
     },
     sectionInfoText: {
