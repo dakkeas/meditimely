@@ -1,0 +1,172 @@
+[
+    {
+        "id": "1",
+        "name": "Cardiologist",
+        "type": "Cardiovascular System",
+        "iconName": "heart-pulse",
+        "iconColor": "black"
+    },
+    {
+        "id": "2",
+        "name": "Pulmonologist",
+        "type": "Respiratory System",
+        "iconName": "lungs",
+        "iconColor": "black"
+    },
+    {
+        "id": "3",
+        "name": "Gastroenterologist",
+        "type": "Digestive System",
+        "iconName": "stomach",
+        "iconColor": "black"
+    },
+    {
+        "id": "4",
+        "name": "Nephrologist",
+        "type": "Urinary System",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "5",
+        "name": "Urologist",
+        "type": "Urinary Male Reproductive System",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "6",
+        "name": "Ophthalmologist",
+        "type": "Eyes and Vision",
+        "iconName": "eye",
+        "iconColor": "black"
+    },
+    {
+        "id": "7",
+        "name": "Dermatologist",
+        "type": "Skin",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "8",
+        "name": "Orthopedist",
+        "type": "Musculoskeletal System",
+        "iconName": "bone",
+        "iconColor": "black"
+    },
+    {
+        "id": "9",
+        "name": "Neurologist",
+        "type": "Nervous System",
+        "iconName": "brain",
+        "iconColor": "black"
+    },
+    {
+        "id": "10",
+        "name": "Endocrinologist",
+        "type": "Endocrine System",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "11",
+        "name": "Psychiatrist",
+        "type": "Mental Health",
+        "iconName": "account-supervisor-circle",
+        "iconColor": ""
+    },
+    {
+        "id": "12",
+        "name": "Immunologist",
+        "type": "Immune System and Allergies",
+        "iconName": "allergy",
+        "iconColor": "black"
+    },
+    {
+        "id": "13",
+        "name": "Hematologist",
+        "type": "Blood and Blood Vessels",
+        "iconName": "blood-bag",
+        "iconColor": "black"
+    },
+    {
+        "id": "14",
+        "name": "Infectious Disease",
+        "type": "Infectious Diseases",
+        "iconName": "bacteria",
+        "iconColor": "black"
+    },
+    {
+        "id": "15",
+        "name": "Anesthesiologist",
+        "type": "Anesthesia and Pain Management",
+        "iconName": "needle",
+        "iconColor": "black"
+    },
+    {
+        "id": "16",
+        "name": "Pain Management",
+        "type": "Anesthesia and Pain Management",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "17",
+        "name": "Gynecologist",
+        "type": "Women's Health",
+        "iconName": "face-woman",
+        "iconColor": "black"
+    },
+    {
+        "id": "18",
+        "name": "Pediatrician",
+        "type": "Children's Health",
+        "iconName": "account-child",
+        "iconColor": "black"
+    },
+    {
+        "id": "19",
+        "name": "Intensivist",
+        "type": "Critical Care",
+        "iconName": "hospital",
+        "iconColor": "black"
+    },
+    {
+        "id": "20",
+        "name": "Radiologist",
+        "type": "Diagnostic Imaging",
+        "iconName": "radiology-box",
+        "iconColor": "black"
+    },
+    {
+        "id": "21",
+        "name": "Pathologist",
+        "type": "Laboratory Medicine",
+        "iconName": "virus",
+        "iconColor": "black"
+    },
+    {
+        "id": "22",
+        "name": "Medical Geneticist",
+        "type": "Genetics",
+        "iconName": "family-tree",
+        "iconColor": "black"
+    },
+    {
+        "id": "23",
+        "name": "Geriatrician",
+        "type": "Elderly Care",
+        "iconName": "doctor",
+        "iconColor": "black"
+    },
+    {
+        "id": "24",
+        "name": "Emergency Medicine",
+        "type": "Emergency Care",
+        "iconName": "pill",
+        "iconColor": "black"
+    }
+
+]
+

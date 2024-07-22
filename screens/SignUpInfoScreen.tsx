@@ -195,7 +195,9 @@ export default function SignUpInfoScreen() {
                     color: "white",
                 }}
 
-
+                onPress={() => {
+                    navigation.navigate('Welcome')
+                }}
                 ></ButtonTemplate>
                     
         </View>

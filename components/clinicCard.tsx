@@ -3,7 +3,7 @@ import { useState } from "react";
 import { withDecay } from "react-native-reanimated";
 
 
-export default function Clinic({
+export default function ClinicCard({
     imageSource,
     clinicName,
     specialistsCount,
@@ -15,59 +15,56 @@ export default function Clinic({
 
     return (
         
-        <Pressable onPress={() => setClinicModalVisible(true)} style={[styles.cardContainer, styles.boxShadow]}>
-            <View style={[styles.flexContainerRow, {columnGap: 30}]}>
-                <View style={[styles.flexContainerRow, {alignContent: "center", justifyContent: "center"}]}>
-                    <Image source={imageSource} style={styles.clinicImage}>
+            <View style={[styles.mainCardContainer, styles.boxShadow]}>
+                <View style={styles.visualCardContainer}>
+                    <View style={styles.clinicImageContainer}>
+                        <Image source={imageSource} style={styles.clinicImage}>
 
-                    </Image>
+                        </Image>
 
-                </View>
+                    </View>
 
-                <View style={[styles.flexContainerColumn, {rowGap: 20, paddingTop: 10, paddingRight: 10, paddingBottom: 10}]}>
-                    <Text style={{fontSize: 28}}>{clinicName}</Text>
+                    <View style={[styles.clinicInfoContainer]}>
 
-                    <View style={{flex: 1}}>
-                        <View style={[styles.flexContainerRow, {columnGap: 10}]}>
-                            <View style={[styles.miniInfoTab, {flexGrow: 1.5}]}>
-                                {/* mini-info-section-big */}
-                                <Text style={styles.infoTabText}>{specialistsCount} Specialists</Text>
+                        <View style={styles.clinicMiniTextContainer}>
+                            <View style={[styles.flexContainerRow, { columnGap: 3 }]}>
+                                <View style={[styles.miniInfoTab, { flexGrow: 1.5 }]}>
+                                    {/* mini-info-section-big */}
+                                    <Text style={styles.infoTabText}>{specialistsCount} Specialists</Text>
+                                </View>
+                                {/* flex row */}
+                                <View style={styles.miniInfoTab}>
+                                    {/* mini-info-section-small */}
+                                    <Text style={styles.infoTabText}>{patientsCount} Patients</Text>
+                                </View>
                             </View>
-                            {/* flex row */}
-                            <View style={styles.miniInfoTab}>
-                                {/* mini-info-section-small */}
-                                <Text style={styles.infoTabText}>{patientsCount} Patients</Text>
+                            <View style={[styles.flexContainerRow, { columnGap: 3, marginTop: 5 }]}>
+                                <View style={styles.miniInfoTab}>
+                                    <Text style={styles.infoTabText}>{rating} Stars</Text>
+                                    {/* mini-info-section-small */}
+                                </View>
+                                {/* flex row */}
+                                <View style={[styles.miniInfoTab, { flexGrow: 1.5 }]}>
+                                    <Text style={styles.infoTabText}>{locationDistance} KM away</Text>
+                                    {/* mini-info-section-big */}
+                                </View>
                             </View>
-                        </View>
-                        <View style={[styles.flexContainerRow, {columnGap: 10, marginTop: 5}]}>
-                            <View style={styles.miniInfoTab}>
-                                <Text style={styles.infoTabText}>{rating} Stars</Text>
-                                {/* mini-info-section-small */}
-                            </View>
-                            {/* flex row */}
-                            <View style={[styles.miniInfoTab, { flexGrow: 1.5}]}>
-                                <Text style={styles.infoTabText}>{locationDistance} KM away</Text>
-                                {/* mini-info-section-big */}
-                            </View>
-                        </View>
-                        <View style={{flex: 1}}>
-                            <Text style={{marginTop: "auto",alignSelf: "flex-end",fontWeight: "bold", fontSize: 12}}>Learn More</Text>
+                            {/* <View style={{flex: 1}}>
+                                <Text style={styles.moreInfoText}>Learn More</Text>
+                            </View> */}
                         </View>
                     </View>
-                </View>
-            </View>
-            <Modal 
-            visible={clinicModalVisible}
-            onRequestClose={() => setClinicModalVisible(false)}
-            animationType='slide'
-            >
-                <View style={{padding: 20, display: "flex", justifyContent: "center", alignItems: "center", flex: 1}}>
-                    <Text style={{fontSize: 30, fontWeight: "bold"}}>Test Info</Text> 
                     
                 </View>
-            </Modal>
-            
-        </Pressable>
+                <View style={styles.clinicNameLocationTextContainer}>
+                    
+                    <Text style={styles.clinicNameText}>{clinicName}</Text>
+                    <Text style={styles.clinicLocationText}>Sta. Mesa, Manila</Text>
+                </View>
+                
+            </View>
+
+
         
     )
 }
@@ -75,64 +72,101 @@ export default function Clinic({
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height; 
 const styles = StyleSheet.create({
-    cardContainer: {
-        height: 240,
-        backgroundColor: "white",
-        width: "80%",
-        borderRadius: 10,
-        padding: 10
+    moreInfoText: {
+        marginTop: "auto",
+        alignSelf: "flex-end",
+        fontWeight: "bold",
+        fontSize: 12,
+        color: "orange"
+    },
+    clinicLocationText: {
+        fontSize: 10,
+        fontFamily: "Poppins_400Regular"
+
+    },
+    clinicNameLocationTextContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        paddingHorizontal: 5,
         
+        alignItems: "center"
+    },
+    visualCardContainer: {
+        flexDirection: "row",
+        flex: 1,
+        
+        
+    },
+    mainCardContainer: {
+        // backgroundColor: "whitesmoke",
+        borderRadius: 3,
+        padding: 5,
+        // flexDirection: "row",
+        flex: 1,
+        height: 140,
+        rowGap: 3,
+    },
+    clinicMiniTextContainer: {
+        flex: 1,
+        
+    },
+    clinicNameText: {
+        fontFamily: "Poppins_600SemiBold",
+        // borderRadius: 7,
+        borderRadius: 3,
+        fontSize: 12,
+        
+    },
+    clinicImage: {
+        flex: 1,
+        borderRadius: 2,
+        height: "100%"
+
+    },
+    miniInfoTab: {
+        flex: 1,
+        // backgroundColor: 'rgba(31, 159, 162, 0.19)',
+        backgroundColor: "rgba(0, 0, 0, 0.45)",
+        
+        // borderRadius: 3,
+        display: "flex",
+        justifyContent: "center",
+        paddingHorizontal: 10,
+        alignItems: "center"
         
     },
 
-    clinicImage: {
-        flex: 1,
-        borderRadius: 3,
-        
-        height: "100%",
-        width: "100%",
-    },
-    miniInfoTab: {
-        height: 30,
-        flex: 1,
-        backgroundColor: 'rgba(31, 159, 162, 0.19)',
-        borderRadius: 7,
-        
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-            
-        
-    },
-    clinicTitle: {
-        
-    },
+
     infoTabText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#1F9FA2',
-        
+        fontSize:10,
+        textAlign: "center",
+        fontFamily: "Poppins_400Regular",
+        // color: '#1F9FA2',
+        color: "white",
+     
     },
     flexContainerRow: {
+       flexDirection: 'row',
+       flex: 1,
+
+    },
+    clinicInfoContainer: {
+       flexDirection: 'column',
+       flex: 1,
+       position: "absolute",
+       right: 10,
+       bottom: 10,
+       rowGap: 5,
+    },
+
+    clinicImageContainer: {
        display: 'flex',
        flexDirection: 'row',
        flex: 1,
+       justifyContent: "center",
+       alignItems: "center"
        
     },
-    flexContainerColumn: {
-       flexDirection: 'column',
-       flex: 1,
-        
-    },
-    boxShadow: {
-        shadowColor: '#000',
-        elevation: 2,
-        
-    }
-
-
     
-
-
     
 })

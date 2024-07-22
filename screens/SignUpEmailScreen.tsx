@@ -58,7 +58,7 @@ export default function SignUpEmailScreen() {
 
             
             <ButtonTemplate
-            title="Continue"
+            title="Continue "
             buttonStyle={{
                 backgroundColor: "#1F9FA2",
                 marginTop: 10
