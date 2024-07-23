@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "stars": 5,
+        "comment": "Excellent service! Very knowledgeable staff. I was impressed by their professionalism and attention to detail."
+    },
+    {
+        "id": 2,
+        "name": "Jane Smith",
+        "stars": 4,
+        "comment": "Good experience overall. Would recommend. The staff was friendly and the facilities were clean."
+    },
+    {
+        "id": 3,
+        "name": "Mike Johnson",
+        "stars": 3,
+        "comment": "Average service. Could be better. While the treatment was adequate, the waiting times were quite long."
+    },
+    {
+        "id": 4,
+        "name": "Sarah Brown",
+        "stars": 2,
+        "comment": "Disappointing experience. Staff seemed uninterested and the facilities were not well-maintained."
+    }
+]

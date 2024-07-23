@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     },
     clinicLocationText: {
         fontSize: 10,
+        color:  "#1F9FA2",
         fontFamily: "Poppins_400Regular"
 
     },
@@ -98,12 +99,12 @@ const styles = StyleSheet.create({
         
     },
     mainCardContainer: {
-        // backgroundColor: "whitesmoke",
-        borderRadius: 3,
+        backgroundColor: "rgba(31,159,162,0.19)",
+        borderRadius: 5,
         padding: 5,
         // flexDirection: "row",
         flex: 1,
-        height: 140,
+        height: 180,
         rowGap: 3,
     },
     clinicMiniTextContainer: {
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     clinicNameText: {
         fontFamily: "Poppins_600SemiBold",
         // borderRadius: 7,
+        color: "#1F9FA2",
         borderRadius: 3,
         fontSize: 12,
         

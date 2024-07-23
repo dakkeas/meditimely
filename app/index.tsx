@@ -13,7 +13,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SearchScreen from "@/screens/SearchScreen";
 import SpecialistInfoScreen from "@/screens/SpecialistsInfoScreen";
 import DiseasesScreen from "@/screens/DiseasesScreen";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 // import MaterialCommunityIconsfrom '@expo/vector-icons/MaterialCommunityIcons';
+// import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+const Tab = createMaterialBottomTabNavigator();
 
 function SpecialistInfoStack(props){
     return (
@@ -62,16 +65,36 @@ function SpecialistInfoStack(props){
         
     )
 }
-function HomeScreenStack(props) {
 
+function HomePageTab(props) {
+    return (
+        <Tab.Navigator>
+            <Tab.Screen name="k"></Tab.Screen>
+            <Tab.Screen name="k"></Tab.Screen>
+            <Tab.Screen name="k"></Tab.Screen>
+        </Tab.Navigator>
+    )
+}
+function HomeScreenStack(props) {
     return (
         <Stack.Navigator>
+        
             <Stack.Screen
                 name = "Home Screen"
                 component={HomeScreen}
                 
                 options={{
                     // headerTitle: (props) => ,
+                    header: (props) => (
+                        <View style={styles.homeHeader}>
+                            <View style={[styles.container, { flexDirection: "row", columnGap: 10 }]}>
+                                <MaterialIcons name="account-circle" size={32} color="white" />
+                                <Text style={styles.headerGreetText}>Welcome back, McAllen!</Text>
+                                </View>
+                            
+                        </View>
+                        
+                    ),
                     headerShown: true,
                     // headerBackVisible: true,
                     headerTitle: "",
@@ -124,7 +147,11 @@ function SignUpStack(props) {
             component={SignUpEmailScreen} 
             options= {{
                 headerTitle: "",
-                headerLeft: () => <TouchableOpacity onPress={() => navigation.navigate("Welcome")}><Text style={styles.headerBackText}>Cancel</Text></TouchableOpacity>
+                headerLeft: () => <TouchableOpacity onPress={() => navigation.navigate("Welcome")}><Text style={styles.headerBackText}>Cancel</Text></TouchableOpacity>,
+                // headerStyle: {
+                    
+                // }
+
                 
             }}
             />
@@ -159,6 +186,7 @@ export default function App() {
     if (!fontsLoaded) {
         return null
     }
+
     return (
 
         <NavigationContainer
@@ -194,11 +222,14 @@ export default function App() {
             
 
             ></Stack.Screen>
-                <Stack.Screen
-                    options={{
-                        headerBackVisible: false,
-                    }}
-                    name="Home" component={HomeScreenStack}></Stack.Screen>
+            <Stack.Screen
+                options={{
+                    headerBackVisible: false,
+                }}
+                name="Home" component={HomeScreenStack}>
+
+                
+                </Stack.Screen>
         </Stack.Navigator>
             
         </NavigationContainer>
@@ -227,9 +258,17 @@ const styles = StyleSheet.create({
     },
     headerGreetText: {
         color: "white",
-        fontFamily: "Poppins_600SemiBold",
-        fontSize: 16,
+        fontFamily: "Poppins_400Regular",
+        fontSize: 14,
         alignSelf: "flex-end"
+    },
+    homeHeader: {
+        height: 60,
+        backgroundColor: "#1F9FA2",
+        // flex: 1,
+        alignItems: "flex-start",
+        justifyContent: "center",
+        paddingHorizontal: 20
     }
     
 

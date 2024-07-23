@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
 import { useNavigation } from "expo-router";
 import InputTextTemplate from "@/components/InputTextTemplate";
 import { useFonts, Poppins_400Regular, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import ButtonTemplate from "@/components/ButtonTemplate";
 import { useState } from "react";
+// import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function SignUpEmailScreen() {

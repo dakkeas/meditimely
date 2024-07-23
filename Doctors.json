@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Dr. Juan dela Cruz",
+        "specialty": "Cardiology",
+        "location": "Manila, Philippines",
+        "experience": "15 years",
+        "image": require("../assets/images/doctor1.jpg"), // Example image path
+        "ratings": 4.8,
+        "reviews": 120
+    },
+    {
+        "id": 2,
+        "name": "Dr. Maria Santos",
+        "specialty": "Pediatrics",
+        "location": "Quezon City, Philippines",
+        "experience": "12 years",
+        "image": require("../assets/images/doctor2.jpg"), // Example image pathKjKj
+        "ratings": 4.9,
+        "reviews": 90
+    },
+    {
+        "id": 3,
+        "name": "Dr. Josefa Reyes",
+        "specialty": "Orthopedics",
+        "location": "Cebu City, Philippines",
+        "experience": "18 years",
+        "image": require("../assets/images/doctor3.jpg"), // Example image path
+        "ratings": 4.7,
+        "reviews": 150
+    }
+]
