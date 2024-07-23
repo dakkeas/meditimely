@@ -23,6 +23,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
 import { BottomNavigation} from 'react-native-paper';
+import ScheduleAppointmentScreen from "@/screens/ScheduleAppointmentScreen";
 // const theme = useTheme();
 // theme.colors.secondaryContainer = "transparent"
 
@@ -181,6 +182,23 @@ function HomeScreenStack(props) {
             options={{
                 headerShown: false
             }}
+            ></Stack.Screen>
+            <Stack.Screen name="Schedule" component={ScheduleAppointmentScreen}
+            options={{
+                headerTitleAlign: "center",
+                headerTitle: "Schedule an Appointment",
+                headerStyle: {
+                    backgroundColor: "#1F9FA2"
+                },
+                headerTitleStyle: {
+                    fontSize: 16,
+                    fontFamily: "Poppins_600SemiBold"
+                },
+                headerTintColor: "white"
+
+            }}
+            
+
             ></Stack.Screen>
 
         </Stack.Navigator>

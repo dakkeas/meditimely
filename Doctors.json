@@ -5,7 +5,7 @@
         "specialty": "Cardiology",
         "location": "Manila, Philippines",
         "experience": "15 years",
-        "image": require("../assets/images/doctor1.jpg"), // Example image path
+        // "image": "../assets/images/doctor1.jpg", // Example image path
         "ratings": 4.8,
         "reviews": 120
     },
@@ -15,7 +15,7 @@
         "specialty": "Pediatrics",
         "location": "Quezon City, Philippines",
         "experience": "12 years",
-        "image": require("../assets/images/doctor2.jpg"), // Example image pathKjKj
+        // "image": require("../assets/images/doctor2.jpg"), // Example image pathKjKj
         "ratings": 4.9,
         "reviews": 90
     },
@@ -25,7 +25,7 @@
         "specialty": "Orthopedics",
         "location": "Cebu City, Philippines",
         "experience": "18 years",
-        "image": require("../assets/images/doctor3.jpg"), // Example image path
+        // "image": require("../assets/images/doctor3.jpg"), // Example image path
         "ratings": 4.7,
         "reviews": 150
     }

@@ -18,7 +18,7 @@ export default function ButtonTemplate({
         return null
     }
     return (
-        <View style={styles.buttonContainer}>
+        <View >
            <TouchableOpacity 
            title={title} 
            style = {[styles.button, buttonStyle]}
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
         height: 50,
         alignItems: "center",
         justifyContent: "center",
-        display: "flex",
     },
     text: {
         fontFamily: "Poppins_600SemiBold",
