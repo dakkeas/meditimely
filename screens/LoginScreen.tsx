@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { StatusBar, View, Text, StyleSheet, Button, TextInput } from "react-native";
 import { useNavigation } from "expo-router";
 import ButtonTemplate from "@/components/ButtonTemplate";
 import InputTextTemplate from "@/components/InputTextTemplate";
@@ -11,6 +11,7 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
             <Text style={styles.title}>Welcome back!</Text>
             
             <Text style={styles.sectionInfoText}>
@@ -40,7 +41,7 @@ export default function LoginScreen() {
                 }}
 
                 onPress={() => {
-                    navigation.navigate("Home")
+                    navigation.navigate("Main")
                 }}
             ></ButtonTemplate>
         </View>

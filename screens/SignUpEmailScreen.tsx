@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
+import { StatusBar, SafeAreaView, View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
 import { useNavigation } from "expo-router";
 import InputTextTemplate from "@/components/InputTextTemplate";
 import { useFonts, Poppins_400Regular, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
@@ -30,6 +30,8 @@ export default function SignUpEmailScreen() {
     }
     return (
         <View style={styles.container}>
+
+            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
             <Text style={styles.title}>Sign Up</Text>
             <Text style={styles.sectionInfoText}>
                 

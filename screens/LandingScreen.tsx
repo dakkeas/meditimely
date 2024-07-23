@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Button, TextInput, Image} from "react-native";
+import {StatusBar, View, Text, StyleSheet, Button, TextInput, Image} from "react-native";
 import { useNavigation } from "expo-router";
 import ButtonTemplate from "@/components/ButtonTemplate";
 
@@ -11,7 +11,8 @@ export default function LandingScreen() {
 
     return (
         <View style={styles.container}>
-        
+       
+            <StatusBar backgroundColor="whitesmoke"></StatusBar>
             <Image source={logoImg} style={styles.logoImg}></Image> 
             
             <View style={styles.buttonContainers}>

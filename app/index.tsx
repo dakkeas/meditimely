@@ -14,13 +14,22 @@ import SearchScreen from "@/screens/SearchScreen";
 import SpecialistInfoScreen from "@/screens/SpecialistsInfoScreen";
 import DiseasesScreen from "@/screens/DiseasesScreen";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import AppointmentScreen from "@/screens/AppointmentsScreen";
+import SettingsScreen from "@/screens/SettingsScreen";
 // import MaterialCommunityIconsfrom '@expo/vector-icons/MaterialCommunityIcons';
 // import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-const Tab = createMaterialBottomTabNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
+
+import { BottomNavigation} from 'react-native-paper';
+// const theme = useTheme();
+// theme.colors.secondaryContainer = "transparent"
 
 function SpecialistInfoStack(props){
     return (
         <Stack.Navigator
+        
         >
         
 
@@ -66,12 +75,64 @@ function SpecialistInfoStack(props){
     )
 }
 
-function HomePageTab(props) {
+function MainScreen(props) {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="k"></Tab.Screen>
-            <Tab.Screen name="k"></Tab.Screen>
-            <Tab.Screen name="k"></Tab.Screen>
+        <Tab.Navigator
+        screenOptions={{
+            tabBarActiveTintColor: '#1F9FA2',
+            headerShown: false,
+            tabBarShowLabel: false,
+            tabBarStyle: {
+                // borderTopRightRadius: 20,
+                // borderTopLeftRadius: 20,
+                elevation: 0,
+                position: "absolute"
+                // backgroundColor: "transparent l"
+            }
+        }}
+        
+        >
+            <Tab.Screen 
+            
+            name="Home"
+            component={HomeScreenStack}
+            options={{
+                tabBarLabel: "Home",
+                tabBarIcon: ({color}) => (
+                            
+                            <MaterialIcons name="home" size={24} color={color} />
+                ),
+                // tabBarColor: "#1F9FA2",
+
+            }}
+
+            ></Tab.Screen>
+            <Tab.Screen 
+            name="Appointments" 
+            component={AppointmentScreen}
+            options={{
+                tabBarLabel: "Appointments",
+                tabBarIcon: ({ color }) => (
+                    <MaterialIcons name="list-alt" size={24} color={color} />
+                ),
+                // tabBarColor: "#1F9FA2",
+
+            }}
+            ></Tab.Screen>
+            <Tab.Screen 
+            name="Settings" 
+            component={SettingsScreen}
+            options={{
+
+
+                tabBarLabel: "Settings",
+                tabBarIcon: ({ color }) => (
+                    <MaterialIcons name="settings" size={24} color={color} />
+                ),
+                // tabBarColor: "#1F9FA2",
+
+            }}
+            ></Tab.Screen>
         </Tab.Navigator>
     )
 }
@@ -222,11 +283,13 @@ export default function App() {
             
 
             ></Stack.Screen>
+
             <Stack.Screen
                 options={{
+                    headerShown: false,
                     headerBackVisible: false,
                 }}
-                name="Home" component={HomeScreenStack}>
+                name="Main" component={MainScreen}>
 
                 
                 </Stack.Screen>

@@ -54,6 +54,12 @@ const StarRating = (rating) => {
 //     return image
 
 // }
+
+// const ClinicDetails = () => {
+//     return(
+
+//     )
+// }
 export default function HomeScreen() {
     const specialistActive = {
         backgroundColor: 'rgba(31, 159, 162, 0.19)',
@@ -124,14 +130,14 @@ export default function HomeScreen() {
         }
     ]
 
+
+
     return (
 
             <View style={styles.homePageContainer}>
             <StatusBar backgroundColor="#1F9FA2"></StatusBar>
                 <ScrollView
                 showsVerticalScrollIndicator={false}
-                    style={{
-                    }}
                 >
                     <View style={{rowGap: 10}}>
 
@@ -278,15 +284,13 @@ export default function HomeScreen() {
                                         locationDistance="12"
                                     ></ClinicCard>
                                 </TouchableOpacity>
-                                 
-
-
-                                <TouchableOpacity>
-                                    <View style={styles.expandSectionContainer}>
-                                        <Text style={styles.expandSectionText}>See More</Text>
-                                    </View>
-                                </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={[styles.expandSectionContainer, {marginBottom: -10}]}>
+                                    <Text style={styles.expandSectionText}>See More</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
+                        
                     </View>
                 </ScrollView> 
 
@@ -541,6 +545,7 @@ const styles = StyleSheet.create({
     },
     homeSection: {
         rowGap: 10,
+
         padding: 10,
         // marginTop: 15,
         borderRadius: 3, 
@@ -625,6 +630,11 @@ const styles = StyleSheet.create({
     },
     homePageContainer: {
         
+        // tom: 10,
+        //
+        //
+        // paddingBottom: 10,
+        marginBottom: 48,
         paddingHorizontal: 10,
         // rowGap: 15,
         
