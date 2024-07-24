@@ -9,7 +9,8 @@ export default function ClinicCard({
     specialistsCount,
     patientsCount,
     rating,
-    locationDistance
+    locationDistance,
+    clinicLocation
 }) {
     const [clinicModalVisible, setClinicModalVisible] = useState(false);
 
@@ -18,7 +19,7 @@ export default function ClinicCard({
             <View style={[styles.mainCardContainer, styles.boxShadow]}>
                 <View style={styles.visualCardContainer}>
                     <View style={styles.clinicImageContainer}>
-                        <Image source={imageSource} style={styles.clinicImage}>
+                        <Image resizeMode= "cover" source={imageSource} style={styles.clinicImage}>
 
                         </Image>
 
@@ -59,7 +60,7 @@ export default function ClinicCard({
                 <View style={styles.clinicNameLocationTextContainer}>
                     
                     <Text style={styles.clinicNameText}>{clinicName}</Text>
-                    <Text style={styles.clinicLocationText}>Sta. Mesa, Manila</Text>
+                    <Text style={styles.clinicLocationText}>{clinicLocation}</Text>
                 </View>
                 
             </View>
@@ -86,10 +87,12 @@ const styles = StyleSheet.create({
 
     },
     clinicNameLocationTextContainer: {
+        
         flexDirection: 'row',
         justifyContent: "space-between",
         paddingHorizontal: 5,
-        
+        paddingTop: 2,
+        flexWrap:"wrap",
         alignItems: "center"
     },
     visualCardContainer: {
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
         padding: 5,
         // flexDirection: "row",
         flex: 1,
-        height: 180,
+        height: 160,
         rowGap: 3,
     },
     clinicMiniTextContainer: {
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
         color: "#1F9FA2",
         borderRadius: 3,
         fontSize: 12,
-        
+        // backgroundColor: "yellow"
     },
     clinicImage: {
         flex: 1,
