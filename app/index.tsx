@@ -112,11 +112,21 @@ function MainScreen(props) {
             name="Appointments" 
             component={AppointmentScreen}
             options={{
+                headerShown: true,
                 tabBarLabel: "Appointments",
                 tabBarIcon: ({ color }) => (
                     <MaterialIcons name="list-alt" size={24} color={color} />
                 ),
                 // tabBarColor: "#1F9FA2",
+                header: (props) => (
+                    <View style={styles.appointmentsHeader}>
+                        <View style={[styles.container]}>
+                            <Text style={styles.headerAppointmentsText}>My Appointments</Text>
+                        </View>
+
+                    </View>
+
+                ),
 
             }}
             ></Tab.Screen>
@@ -345,12 +355,28 @@ const styles = StyleSheet.create({
     },
     homeHeader: {
         height: 60,
-        backgroundColor: "#1F9FA2",
-        // flex: 1,
+        backgroundColor: "#0F9FA2",
+        // flex: 0,
         alignItems: "flex-start",
         justifyContent: "center",
-        paddingHorizontal: 20
+        paddingHorizontal: 19
+    },
+    appointmentsHeader: {
+        height: 60,
+        backgroundColor: "#0F9FA2",
+        // flex: 0,
+        alignItems: 'center',
+        justifyContent: "flex-end",
+        paddingHorizontal: 19
+        
+    },
+    headerAppointmentsText: {
+        fontFamily: "Poppins_600SemiBold",
+        fontSize: 16,
+        textAlign: "center",
+        color: "white",
+        marginBottom: 12,
+        
     }
-    
 
 })

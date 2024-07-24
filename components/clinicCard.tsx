@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
         padding: 5,
         // flexDirection: "row",
         flex: 1,
+        maxWidth: 200,
         height: 160,
         rowGap: 3,
     },

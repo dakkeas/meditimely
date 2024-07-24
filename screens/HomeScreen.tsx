@@ -16,7 +16,7 @@ import { Dimensions,
 // import { SearchBar } from "react-native-elements";
 import { SearchBar } from "react-native-screens";
 import { useNavigation } from "expo-router";
-import ClinicCard from "@/components/ClinicCard";
+import ClinicCard from "@/components/clinicCard";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -38,6 +38,7 @@ const app = initializeApp(firebaseConfig);
 // const WIDTH = Dimensions.get('window').width;
 const db = getDatabase();
 const WIDTH = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('window').height;
 const doctor = require("../assets/images/doctor3.jpg")
 // components
 
@@ -183,7 +184,7 @@ const DoctorsDetails = ({
                                 <View style={styles.doctorCard}>
                                     <View style={styles.doctorImage}>
 
-                                        <Image source={doctorProfile} style={{ height: 100, width: 100 }} resizeMode="cover"></Image>
+                                        <Image source={doctorProfile} style={{ height: 70, width: 70 }} resizeMode="cover"></Image>
                                     </View>
                                     <View style={styles.doctorInfoContainer}>
 
@@ -489,8 +490,8 @@ export default function HomeScreen() {
                             </ScrollView>
                         </View>
                         <View style={styles.homeSection}>
-                            <View style={styles.sectionTextRowContainer}>
-                                <View style={styles.sectionTitleContainer}>
+                        <View style={[styles.sectionTextRowContainer]}>
+                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#52BE80" }]}>
                                     <View style={{ alignSelf: "center" }}>
                                         <MaterialIcons name="near-me" size={14} color="white" />
 
@@ -503,10 +504,13 @@ export default function HomeScreen() {
 
                             </View>
                                  <FlatList
-                                 data={clinicList}
+
                                  
-                                 showsVerticalScrollIndicator={false}
-                                 ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
+                                 data={clinicList}
+                                 initialNumToRender={2}
+                                 horizontal
+                                 showsHorizontalScrollIndicator={false}
+                                 ItemSeparatorComponent={() => <View style={{width: 10}}></View>}
                                  keyExtractor={(item,index)=> index.toString()}
                                  renderItem={({item, index})=> {
                                     return (
@@ -541,7 +545,65 @@ export default function HomeScreen() {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        
+                    <View style={[styles.homeSection, {marginBottom: 10
+
+
+                    }]}>
+                        <View style={styles.sectionTextRowContainer}>
+                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#A569BD"}]}>
+                                <View style={{ alignSelf: "center" }}>
+                                    <MaterialIcons name="stars" size={14} color="white" />
+
+                                </View>
+                                <Text style={[styles.sectionTitle, {}]}>Popular Clinics</Text>
+                            </View>
+                            <TouchableOpacity>
+                                <Text style={styles.sectionInfoText}>Filter</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                        <FlatList
+
+
+                            data={clinicList}
+                            initialNumToRender={2}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            ItemSeparatorComponent={() => <View style={{ width: 10 }}></View>}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setisClinicModalVisible(!isClinicModalVisible)
+                                            setClinicModalIndex(index)
+                                            setClinicModalObject(item)
+
+                                        }}
+                                    >
+                                        <ClinicCard
+                                            imageSource={clinicImage}
+                                            clinicName={item.hospitalName}
+                                            specialistsCount={item.doctors.length}
+                                            patientsCount="0"
+                                            rating={getAverageRating(item.reviews)}
+                                            locationDistance={Math.round(item.distance)}
+                                            clinicLocation={item.location}
+                                        ></ClinicCard>
+
+                                    </TouchableOpacity>
+                                )
+
+                            }}
+                        ></FlatList>
+
+
+                        <TouchableOpacity>
+                            <View style={[styles.expandSectionContainer, { marginBottom: -10 }]}>
+                                <Text style={styles.expandSectionText}>See More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                     </View>
                 </ScrollView> 
 
@@ -549,8 +611,15 @@ export default function HomeScreen() {
                 visible={isClinicModalVisible}
                 onRequestClose={() => setisClinicModalVisible(!isClinicModalVisible)}
                 animationType="slide"
-                // presentationStyle="fullscreen"
+                presentationStyle="fullscreen"
                 //k transparent={true}
+                style={{
+                    backgroundColor: "yellow"
+                }}
+                
+                >
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
                 >
                    <View style={[styles.clinicModalContainer]}>
 
@@ -572,13 +641,10 @@ export default function HomeScreen() {
                             </View>
                         </View>
                                     
-                        <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        >
+
                             <View style={styles.clinicMainContentContainer}>
 
-                                    <View style={{rowGap: 15}}>
-                                        <View style={styles.clinicImageContainer}>
+                                        <View style={[styles.clinicImageContainer, {marginBottom: 15,}]}>
                                             <FlatList
                                             scrollEnabled={true}
                                                 data={images}
@@ -600,6 +666,7 @@ export default function HomeScreen() {
 
                                             </FlatList>
                                         </View>
+                                    <View style={{rowGap: 15, flex: 1}}>
                                         <View style={styles.detailsTabContainer}>
                                             <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, {borderTopLeftRadius: 3, borderBottomLeftRadius: 3} ]}
                                             onPress={() => setDetailActive(0)}
@@ -617,29 +684,33 @@ export default function HomeScreen() {
                                                 <Text style={[styles.detailTabButtonText, detailActive === 2 ? {color: "white"} : null]}>Reviews</Text>
                                             </TouchableOpacity>
                                         </View>
-                                        {
-                                            renderDetailContent(detailActive)
-                                        }
+                                        <View style={{flex: 1,}}>
+                                            
+                                            {
+                                                renderDetailContent(detailActive)
+                                            }
+                                        </View>
 
                                     </View>
-                                <ButtonTemplate
-                                    title="Book an Appointment"
-                                    buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", marginTop: 10 }}
-                                    onPress={() => {
-                                        navigation.navigate('Schedule')
-                                        setisClinicModalVisible(!isClinicModalVisible)
-                                    }}
-
-                                    textStyle={{ color: "#1F9FA2" }}
-                                >
-
-                                </ButtonTemplate>
 
 
-                                        
+
+                            <ButtonTemplate
+                                title="Book an Appointment"
+                                buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", marginTop: 10 }}
+                                onPress={() => {
+                                    navigation.navigate('Schedule')
+                                    setisClinicModalVisible(!isClinicModalVisible)
+                                }}
+
+                                textStyle={{ color: "#1F9FA2" }}
+                            >
+
+                            </ButtonTemplate>      
                             </View>
-                        </ScrollView>
+
                    </View> 
+                        </ScrollView>
                 </Modal>
                 
             </View>
@@ -783,30 +854,45 @@ const styles = StyleSheet.create({
         fontFamily: "Poppins_400Regular",
     },
     clinicModalHeader: {
+        paddingHorizontal: 20,
+        paddingTop:20,
         // backgroundColor: "yellow",
         width: "100%",
     },
     clinicModalContainer: {
-        flex: 1,
-         
         backgroundColor: "#1F9FA2",
+        // height: HEIGHT,
+       
+        
+        
+        // backgroundColor: "yellow",
         // backgroundColor: "yellow"
         // padding: 30k
+        
+        
+    },
+    clinicTitleContainer:{
+        paddingVertical: 20,
     },
     clinicMainContentContainer: {
-        flex: 1,
         borderTopLeftRadius: 20,
+
+        // flexGrow: 9,
         borderTopRightRadius: 20,
-        backgroundColor: "rgba(244, 244, 244, 1)",
+        flex: 1,
+        // marginBottom: 1,
+
+        // backgroundColor: "rgba(244, 244, 244, 1)",
+        backgroundColor: "white",
         padding: 20,
     },
     clinicUpperContentContainer: {
         // backgroundColor: "yellow",
-        // 
-        backgroundColor: "#1F9FA2",
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 20,
+        // flexGrow: 1,
+        // flex: 0,
+        flexShrink: 0, // Ensure this child does not shrink beyond its content size
+        flexGrow: 0, // Prevent this child from growing beyond its content size
+        // backgroundColor: "#1F9FA2",
 
     },
     clinicDistanceContainer :{
@@ -835,11 +921,15 @@ const styles = StyleSheet.create({
         // backgroundColor: "yellow"
     },
     clinicInfoContainer: {
-        backgroundColor: "white",
-        borderRadius: 3,
+        // backgroundColor: "white",
+        backgroundColor: "#F8F9F9",
 
+        borderRadius: 3,
+        flex: 1,
+        
     },
     detailsContainer: {
+        flex: 1,
         paddingHorizontal: 18,
         paddingTop: 15,
         rowGap:10,
@@ -861,7 +951,8 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 0, 
     },
     clinicReviewsContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#F8F9F9",
+        flex: 1,
         borderRadius: 3,
         
     },
@@ -924,7 +1015,7 @@ const styles = StyleSheet.create({
     },
     clinicDoctorsContainer:{
         borderRadius: 3,
-        backgroundColor: "white"
+        backgroundColor: "#F8F9F9"
     },
     doctorCard: {
         flexDirection: "row",
@@ -947,23 +1038,26 @@ const styles = StyleSheet.create({
         height: 70,
         width: 70,
         borderRadius: 75,
-        borderColor: "#F5B041",
-        borderWidth: 2,
+        // borderColor: "#F5B041",
+        // borderWidth: 2,
         overflow: "hidden"
     },
     detailsTabContainer: {
         flexDirection: "row",
         flex: 1,
+        columnGap: 5,
         
     },
     detailTabButtonText: {
         fontFamily: "Poppins_600SemiBold",
+        color: "#FF8A5B",
         fontSize: 12,
     },
     detailTabButton: {
         flex: 1,
         height: 30,
-        backgroundColor: 'white',
+        backgroundColor: "#FEF5E7",
+        borderRadius: 3,
         justifyContent: "center",
         alignItems: "center",
     },

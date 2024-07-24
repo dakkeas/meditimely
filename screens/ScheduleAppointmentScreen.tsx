@@ -41,7 +41,7 @@ export default function App() {
                     <View style={styles.calendarContainer}>
                         <CalendarPicker onDateChange={onDateChange}
                             width={WIDTH - 60}
-                            selectedDayColor="#1F9FA2"
+                            selectedDayColor="#FF8A5B"
                             selectedDayTextColor="white"
                             textStyle={{
                                 fontFamily: "Poppins_400Regular"
