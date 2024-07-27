@@ -67,7 +67,6 @@ export default function AppointmentScreen() {
         }
     }
 
-
     return (
         <View style={styles.container}>
             <View style={styles.appointmentsTabContainer}>
