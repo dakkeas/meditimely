@@ -8,6 +8,9 @@ import { View,
     Switch,
     TouchableOpacity,
     BackHandler,
+    ActivityIndicator,
+    SafeAreaView
+
     
 } from "react-native";
 import { useNavigation } from "expo-router";
@@ -18,18 +21,28 @@ import { useState, useEffect} from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import { Switch } from 'react-native-switch';
 import CheckBox from 'expo-checkbox'
+import { checkEmpty } from "@/auth";
+import { emailValidation } from "@/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from "firebase/app";
+import firebaseConfig from "@/firebase_setup";
+import CircularLoading from "@/components/CircularLoading";
 
 
-export default function SignUpInfoScreen() {
+export default function SignUpInfoScreen({ route }) {
 
+    // destructure data from signup screen
+    const { email } = route.params
+    const { password } = route.params
+    
+    
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
-    const [selectedLanguage, setSelectedLanguage] = useState();
     const navigation = useNavigation();
-    // invoke navigation object
-    // DateTimePickerAndroid.open(params: AndroidNativeProps)
+
 
     const formatDate = (rawDate) => {
         let date = new Date(rawDate)
@@ -41,28 +54,38 @@ export default function SignUpInfoScreen() {
         return `${day} ${month} ${year}`
 
     }
+
     const toggleActive = {
         backgroundColor: 'rgba(31, 159, 162, 0.19)',
         borderColor: "#1F9FA2"
     }
     
+
     const [date, setDate] = useState(new Date())
     const [showPicker, setShowPicker] = useState(false)
-    
     const [dateofBirth, setDateofBirth] = useState(date)
-    
     const toggleDatePicker = () => {
         setShowPicker(!showPicker)
         // toggles the showpicker when called
     }
-    const [isMale, setisMale] = useState(false);
     
+    const [errorMessage, setErrorMessage] = useState("")
+    
+    const [firstName, setFirstName] = useState('Justine')
+    const [lastName, setLastName] = useState('Daquis')
+    const [age, setAge] = useState('')
+    const [isMale, setisMale] = useState(false);
+    const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    
+    const [isLoading, setIsLoading] = useState(false);
+
     const onChange = ({ type }, selectedDate) => {
         // function receives event and selected date
         
         if (type == "set") {
             const currentDate = selectedDate
             setDate(currentDate)
+
 
             if (Platform.OS === "android") {
                 toggleDatePicker();
@@ -72,22 +95,40 @@ export default function SignUpInfoScreen() {
         } else {
             toggleDatePicker
             
+            
         }
     
-
-        
     }
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    
+    // firebase authentication
+    function signUpUser(email, password, fname, lname, dob, sex) {  
+    }
+
+    const database = getDatabase();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+
+    
+    if (isLoading) {
+        return (
+            <CircularLoading></CircularLoading>
+        )
+    }
     return (
         <View style={styles.container}>
+        
+        
             <Text style={styles.title}>Let us get to know you!</Text>
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
 
             <View style={styles.fullNameInputContainer}>
                 
                 <InputTextTemplate
                 placeholder="First name"
                 label="First name"
-                
+                value = {firstName}
+                onChangeText = {setFirstName}
 
                 >
                 </InputTextTemplate>
@@ -95,6 +136,8 @@ export default function SignUpInfoScreen() {
                 <InputTextTemplate
                 placeholder="Last name"
                 label="Last name"
+                value = {lastName}
+                onChangeText = {setLastName}
 
                 >
                 </InputTextTemplate>
@@ -110,13 +153,14 @@ export default function SignUpInfoScreen() {
                 }}
                 >
                 <InputTextTemplate
-                placeholder={typeof dateofBirth === "object" ? '28 Sept 2002' : dateofBirth }
+                placeholder={typeof dateofBirth === "object" ? '28 Sept 2002' : formatDate(dateofBirth)}
                 label="Date of Birth"
                 value={dateofBirth}
                 onChangeText={setDateofBirth}
                 editable={false}
                 ></InputTextTemplate>
                 
+
                 </Pressable>
 
                 {showPicker && (
@@ -196,7 +240,63 @@ export default function SignUpInfoScreen() {
                 }}
 
                 onPress={() => {
-                    navigation.navigate('Welcome')
+
+                    switch (true) {
+                        case checkEmpty(firstName): 
+                            setErrorMessage("Empty first name!")
+                            break
+                        case checkEmpty(lastName): 
+                            setErrorMessage("Empty last name!")
+                            break
+                        case !toggleCheckBox:
+                            setErrorMessage('Please check the box to agree to the Terms and Conditions')
+                            break
+
+                        default:
+                            setIsLoading(true)
+                            console.log('signing uppp')
+                            createUserWithEmailAndPassword(auth, email, password)
+                                .then((userCredential) => {
+                                    // Signed up 
+                                    console.log('signed up complete')
+                                    const user = userCredential.user;
+                                    // ...
+
+                                    // write user credentials under their unique uid to firebase!
+                                    // adjust database ref
+
+                                    set(ref(database, 'users/' + user.uid + '/userInfo'), {
+                                        fname: firstName,
+                                        lname: lastName,
+                                        email: email,
+                                        dob: formatDate(dateofBirth),
+                                        sex: isMale ? 'M' : "F",
+                                        last_login: Date.now()
+
+                                    }).then(() => {
+                                        
+                                        navigation.navigate('Welcome')
+                                        setIsLoading(false)
+                                    })
+
+                                })
+                                .catch((error) => {
+                                    setIsLoading(false)
+
+                                    console.log("failed!")
+                                    const errorCode = error.code;
+                                    const errorMessage = error.message;
+                                    console.log(error.code)
+                                    console.log(error.message)
+                                    setErrorMessage(errorCode)
+                                });
+
+
+                    }
+
+
+
+
                 }}
                 ></ButtonTemplate>
                     
@@ -219,7 +319,7 @@ const styles = StyleSheet.create({
     },
     fullNameInputContainer: {
         marginHorizontal: 76,
-        marginTop: 20,
+        // marginTop: 20,
         flexDirection: "row",
         // alignItems: "center",
         justifyContent: "center",
@@ -267,6 +367,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontFamily: "Poppins_700Bold"
+    },
+    errorMessage: {
+        fontFamily: "Poppins_600SemiBold",
+        color: "red",
+        
     },
 
 })

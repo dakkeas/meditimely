@@ -210,6 +210,7 @@ function HomeScreenStack(props) {
             
 
             ></Stack.Screen>
+            
 
         </Stack.Navigator>
     )
@@ -286,11 +287,15 @@ export default function App() {
         screenOptions={{
             headerShown: false
         }}
+        
         >
 
-            <Stack.Screen name="Welcome" component={LandingScreen}></Stack.Screen>
+            
             {/* re routes to either login or sign up stack */}
+            <Stack.Screen name="Welcome" component={LandingScreen}></Stack.Screen>
+
             <Stack.Screen name="Sign Up" component={SignUpStack}></Stack.Screen>
+
             <Stack.Screen 
             name="Login" component={LoginScreen}
             options={{

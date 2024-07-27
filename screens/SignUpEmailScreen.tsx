@@ -6,10 +6,59 @@ import ButtonTemplate from "@/components/ButtonTemplate";
 import { useState } from "react";
 // import { SafeAreaView } from "react-native-safe-area-context";
 
+import { checkEmpty } from "../auth"
+import { emailValidation } from "../auth"
+
+
 
 export default function SignUpEmailScreen() {
+    const [email, setEmail] = useState('justinedaquis2020@gmail.com');
+    const [password, setPassword] = useState('justinekiel');
+    const [confirmPassword, setConfirmPassword] = useState('justinekiel');
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    // function checkEmpty(inputWord) {
+    //     if (inputWord == null || inputWord.length == 0) {
+    //         console.log('returning TRUE')
 
-    const [email, setEmail] = useState("");
+    //         return true
+    //     } else {
+    //         console.log('returning FALSE')
+    //         return false
+    //     }
+    // }
+
+    function passwordSignUpValidation(password, confirmPassword) {
+        if (password.length < 6) {
+            // if password is too short, throw an error!
+            console.error('Password too short');
+            setErrorMessage("Password has to be more than 6 letters")
+        } else {
+
+            if (confirmPassword.length == 0) {
+                // if confirming password not needed
+                return true
+            } else {
+                if (password == confirmPassword) {
+                    // if password does not match confirm password
+                    setPassword(password)
+                    return true
+                } else {
+                    console.error('Passwords does not match')
+                    setErrorMessage('Passwords do not match')
+                }
+            }
+
+        }
+
+        return false
+    }
+
+
+
+
+
+    // const [email, setEmail] = useState("");
     
     const navigation = useNavigation();
     // invoke navigation object
@@ -20,14 +69,12 @@ export default function SignUpEmailScreen() {
         Poppins_600SemiBold
     });
 
-    const handleEmailChange = (text) => {
-        setEmail(text)
-        // additional code with the email change
-    }
     
     if (!fontsLoaded) {
         return null
     }
+
+    
     return (
         <View style={styles.container}>
 
@@ -37,29 +84,42 @@ export default function SignUpEmailScreen() {
                 
                 Discover the optimal clinics near you with personalized recommendations powered by AI.
             </Text>
+            <View style={{justifyContent: "flex-start", alignItems: "flex-start"}}>
+                
+                <Text style={styles.errorMessage}>{errorMessage ? errorMessage : " "}</Text>
+            </View>
 
             <InputTextTemplate
-            placeholder={"juandelacruz@gmail.com"}
+            placeholder="juandelacruz@gmail.com"
             label="Email Address"
-            initialValue = {email}
-            onChangeText = {handleEmailChange}
+            value = {email}
+            onChangeText = {setEmail}
+            autoCapitalize="none"
             ></InputTextTemplate>
             
             <InputTextTemplate
-            placeholder={"Enter your password"}
+            placeholder="Enter your password"
             label="Password"
-            // complete here state change
+            value = {password}
+            onChangeText = {setPassword}
+
+            autoCapitalize="none"
+            secureTextEntry={true}
             //
+            autoCapitalize={false}
             ></InputTextTemplate>
             <InputTextTemplate
-            placeholder={"Confirm your password"}
+            placeholder="Confirm your password"
             label="Confirm Password"
-            // complete here state change
+            secureTextEntry={true}
+            value = {confirmPassword}
+            onChangeText = {setConfirmPassword}
+            autoCapitalize="none"
+            
             //
             ></InputTextTemplate>
             
 
-            
             <ButtonTemplate
             title="Continue "
             buttonStyle={{
@@ -69,9 +129,35 @@ export default function SignUpEmailScreen() {
             textStyle={{
                 color: "white"
             }}
+            
 
             onPress = {() => {
-                navigation.navigate("Info Sign Up")
+                // check empty first!~
+                if (checkEmpty(email)) {
+                    
+                    setErrorMessage("Email is empty!")
+                } else if (checkEmpty(password)) {
+                    setErrorMessage("Password is empty!")
+                } else if (checkEmpty(confirmPassword)) {
+                    setErrorMessage("Confirm Password is empty!")
+                } else {
+                    console.log('no fields are empty!')     
+                    if (emailValidation(email)) {
+                    if (passwordSignUpValidation(password, confirmPassword)){
+                        navigation.navigate('Info Sign Up', {
+                            email: email,
+                            password: password
+                        })
+                        setErrorMessage('')
+                    }
+                    } else {
+                        setErrorMessage("Not a Valid Email!")
+                    }
+                }
+                
+                
+
+                
             }}
             ></ButtonTemplate>
         
@@ -89,7 +175,11 @@ export default function SignUpEmailScreen() {
                     justifyContent: "center",
                     marginLeft: 5
                 }}
-                onPress = {() => {navigation.navigate("Login")}}
+                onPress = {() => {
+
+                    navigation.navigate("Login")
+
+                }}
                 >
 
                     <Text style={styles.pressableLoginText}>Log In</Text>
@@ -133,9 +223,13 @@ const styles = StyleSheet.create({
     sectionInfoText: {
         fontFamily: "Poppins_400Regular",
         fontSize: 16,
-        marginBottom: 20,
         
     },
+    errorMessage: {
+        fontFamily: "Poppins_600SemiBold",
+        color: "red",
+
+    }
     
 
 

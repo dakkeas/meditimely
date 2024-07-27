@@ -2,14 +2,7 @@ import { SafeAreaView, TextInput, View, Text, StyleSheet, Button, TouchableOpaci
 import { useState } from "react";
 import { useFonts, Poppins_400Regular, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 
-export default function InputTextTemplate({
-    placeholder,
-    label,
-    onChangeText,
-    inputStyle,
-    editable
-    
-}) {
+export default function InputTextTemplate({label, inputStyle, ...props }) {
     const [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_700Bold,
@@ -33,12 +26,14 @@ export default function InputTextTemplate({
         <SafeAreaView style={styles.container}>
             <Text style={styles.labelText}>{label}</Text>
             <TextInput
-            placeholder={placeholder}
+            {...props}
+            // secureTextEntry={secureTextEntry}
+            // placeholder={placeholder}
             style = {[styles.inputField, inputStyle]}
-            value={text}
-            onChangeText={handleChangeText}
-            autoCapitalize="none"
-            editable= {editable}
+            // value={text}
+            // onChangeText={handleChangeText}
+            // autoCapitalize="none"
+            // editable= {editable}
             ></TextInput>
         </SafeAreaView>
     )

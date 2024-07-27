@@ -12,6 +12,7 @@ import { Dimensions,
     FlatList, 
     TouchableOpacity,
     Touchable, 
+    Alert
 } from "react-native";
 // import { SearchBar } from "react-native-elements";
 import { SearchBar } from "react-native-screens";
@@ -32,7 +33,8 @@ import firebaseConfig from "@/firebase_setup";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
-
+import { getAuth, signOut } from "firebase/auth";
+import CircularLoading from "@/components/CircularLoading";
 // firebase setup
 const app = initializeApp(firebaseConfig);
 // const WIDTH = Dimensions.get('window').width;
@@ -388,14 +390,42 @@ export default function HomeScreen() {
         }
     }
 
-    
-    return (
 
+    const [isLoading, setIsLoading] = useState(false)
+    
+    
+    if (isLoading) {
+        return (
+            <CircularLoading></CircularLoading>
+        )
+    }
+
+
+    const auth = getAuth();
+    useEffect(
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+                // if (!hasUnsavedChanges) {
+                //     // If we don't have unsaved changes, then we don't need to do anything
+                //     return;
+                // }
+
+                // // Prevent default behavior of leaving the screen
+                e.preventDefault();
+
+                // Prompt the user before leaving the screen
+
+            }),
+        [navigation]
+    );
+
+    return (
             <View style={styles.homePageContainer}>
             <StatusBar backgroundColor="#1F9FA2"></StatusBar>
                 <ScrollView
                 showsVerticalScrollIndicator={false}
                 >
+                
                     <View style={{rowGap: 10}}>
 
                         <View
