@@ -595,9 +595,11 @@ export default function HomeScreen({ route }) {
                                     return (
                                         <TouchableOpacity
                                             onPress={() => {
+                                                console.log(clinicList) 
                                                 setisClinicModalVisible(!isClinicModalVisible)
                                                 setClinicModalIndex(index)
                                                 setClinicModalObject(item)
+                                                console.log(clinicModalIndex)
                                                 
                                             }}
                                         >
@@ -658,6 +660,8 @@ export default function HomeScreen({ route }) {
                                         onPress={() => {
                                             setisClinicModalVisible(!isClinicModalVisible)
                                             setClinicModalIndex(index)
+                                            
+                                            console.log(clinicModalIndex)
                                             setClinicModalObject(item)
 
                                         }}
@@ -769,7 +773,7 @@ export default function HomeScreen({ route }) {
                                         <View style={{flex: 1,}}>
                                             
                                             {
-                                                renderDetailContent(detailActive)
+                                            renderDetailContent(detailActive)
                                             }
                                         </View>
 
@@ -781,8 +785,12 @@ export default function HomeScreen({ route }) {
                                 title="Book an Appointment"
                                 buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", marginTop: 10 }}
                                 onPress={() => {
+                                    
                                     navigation.navigate('Schedule', {
-                                        clinicObject: clinicModalObject
+                                        clinicObject: clinicModalObject,
+                                        clinicId: clinicModalIndex,
+                                        useruid: useruid,
+                                        
                                     })
                                     setisClinicModalVisible(!isClinicModalVisible)
                                 }}

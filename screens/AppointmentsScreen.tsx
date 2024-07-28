@@ -1,44 +1,134 @@
-import { Image,FlatList, TouchableOpacity, Pressable, View, Text, StyleSheet, Button, TextInput} from "react-native";
+import { ScrollView, Image,FlatList, TouchableOpacity, Pressable, View, Text, StyleSheet, Button, TextInput} from "react-native";
 import {useState, useEffect } from "react"
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { getDatabase, ref, onValue } from "firebase/database";
+import { setPersistence } from "firebase/auth";
 const doctorProfile = require("../assets/images/doctor_profile.jpg");
+import { getAuth} from "firebase/auth";
+import CircularLoading from "@/components/CircularLoading";
 export default function AppointmentScreen() {
+
+    const auth = getAuth();
     const [detailActive, setDetailActive] = useState(0)
-    
-    
-    const AppointmentCard = () => {
-        return (
-            <View style={styles.appointmentCardContainer}>
-                <View style={{rowGap: 10}}>
-                    <View style={styles.doctorImage}>
-                        <Image style={{ height: 70, width: 70 }} source={doctorProfile} resizeMode="cover"></Image>
-                    </View>
-                    <View style={styles.doctorRatingContainer}>
-                        {/* <Text>Stars</Text>  */}
-                        <MaterialIcons name="star" size={16} color="#FFD700" />
-                        <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#27ccd2", fontSize: 12,}}>4.8</Text>
-                    </View>
-                </View>
-                <View style={styles.doctorInformationContainer}>
-                    <Text style={styles.clinicBookedText}>Alvarez Medical Center</Text>
-                    <Text style={styles.doctorNameText}>Dr. Rodger Struck</Text>
-                    <View style={{justifyContent: "flex-start", alignItems: "flex-start"}}>
-                        <Text style={styles.specializationText}>Cardiologist</Text>
-                    </View>
-                    <View style={styles.bookingStatusContainer}>
-                        <Text style={{ color: "#27ccd2", fontFamily: "Poppins_400Regular", fontSize: 12,}}>Status: </Text>
-                        <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
-                            <Text style={styles.bookingStatusText}>PENDING</Text>
-                        </View>
-                        <View style={{ justifyContent: "flex-start", alignItems: "flex-start", marginLeft: "auto"}}>
-                            <Text style={styles.rateText}>RATE</Text>
-                        </View>
-                    </View>
-                    
-                </View>
+    const db = getDatabase();
+    const [isLoading, setIsLoading] = useState(true)
+    const [appointmentsList, setAppointmentsList] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [useruid, setUseruid] = useState('')
+
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+            setUseruid(user.uid);
+            console.log(useruid)
             
-            </View>
+        } else {
+            // setError('No user op in');
+            console.error('No user logged in')
+            setIsLoading(false);
+        }
+    }, []);
+
+
+    const appointmentsRef = ref(db, `appointments/${useruid}`);
+    useEffect(() => {
+        
+        const unsubscribe = onValue(appointmentsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    setAppointmentsList(data)
+                    setIsLoading(false)
+                    console.log(appointmentsList)
+
+
+                } else {
+                    
+                    console.error('Unable to fetch appointments')
+                    setErrorMessage('Unable to fetch appointments')
+                    setIsLoading(false)
+                }
+            }, (error) => {
+                console.error('Error fetching data:', error);
+                console.error(error.message);
+                setIsLoading(false);
+                
+            });
+        
+            // clear cache
+            // 
+            return () => unsubscribe();
+
+
+    }, [useruid])
+
+    async function fetchAppointments() { 
+        setIsLoading(true)
+        try {
+            await onValue(appointmentsRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log(data)
+            });
+            
+            
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            console.error(error.message);
+            setIsLoading(false);
+
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    
+    if (isLoading) {
+        return (
+            <CircularLoading></CircularLoading>
+        )
+    }
+    
+    const AppointmentCard = ({
+        doctorName,
+        specialty,
+        doctorRating,
+        hospitalName,
+        time,
+        status,
+        
+    }) => {
+        return (
+                <View style={styles.appointmentCardContainer}>
+                    <View style={{ rowGap: 10 }}>
+                        <View style={styles.doctorImage}>
+                            <Image style={{ height: 70, width: 70 }} source={doctorProfile} resizeMode="cover"></Image>
+                        </View>
+                        <View style={styles.doctorRatingContainer}>
+                            {/* <Text>Stars</Text>  */}
+                            <MaterialIcons name="star" size={16} color="#FFD700" />
+                            <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#27ccd2", fontSize: 12, }}>{doctorRating}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.doctorInformationContainer}>
+                        <Text style={styles.clinicBookedText}>{hospitalName}</Text>
+                        <Text style={styles.doctorNameText}>{doctorName}</Text>
+                        <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                            <Text style={styles.specializationText}>{specialty}</Text>
+                        </View>
+                        <View style={styles.bookingStatusContainer}>
+                            <Text style={{ color: "#27ccd2", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Status: </Text>
+                            <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                <Text style={styles.bookingStatusText}>{status}</Text>
+                            </View>
+                            <View style={{ justifyContent: "flex-start", alignItems: "flex-start", marginLeft: "auto" }}>
+                                <Text style={styles.rateText}>RATE</Text>
+                            </View>
+                        </View>
+
+                    </View>
+
+                </View>
+
         )
     }
         
@@ -81,27 +171,31 @@ export default function AppointmentScreen() {
                     <Text style={[styles.detailTabButtonText, detailActive === 1 ? { color: "white" } : null]}>Completed</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.bookingsContainer}>
-                <TouchableOpacity>
-                    <AppointmentCard></AppointmentCard>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <AppointmentCard></AppointmentCard>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <AppointmentCard></AppointmentCard>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <AppointmentCard></AppointmentCard>
-                </TouchableOpacity>
-                {/* {
-                <TouchableOpacity>
-                    <AppointmentCard></AppointmentCard>
-                </TouchableOpacity>
-                    renderDetailContent(detailActive)
-                }
-                 */}
-            </View>
+                <FlatList
+                    scrollEnabled
+                    showsVerticalScrollIndicator={false}
+                    ListFooterComponent={<View style={{ height: 75 }}></View>}
+                    data={Object.values(appointmentsList)}
+                    ItemSeparatorComponent={() => <View style={{ height: 8 }}></View>}
+                    renderItem={({ item }) => {
+                        return (
+
+                            <TouchableOpacity>
+                                <AppointmentCard
+
+
+                                    doctorName={item.doctorName}
+                                    specialty={item.doctorSpecialty}
+                                    doctorRating={item.doctorRating}
+                                    hospitalName={item.hospitalName}
+                                    time={item.time}
+                                    status={item.status}
+                                ></AppointmentCard>
+                            </TouchableOpacity>
+                        )
+                    }}
+                ></FlatList>
+
             
                 
         </View>

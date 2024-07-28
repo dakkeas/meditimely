@@ -272,7 +272,7 @@ export default function SignUpInfoScreen({ route }) {
                                         email: email,
                                         dob: formatDate(dateofBirth),
                                         sex: isMale ? 'M' : "F",
-                                        last_login: Date.now()
+                                        last_login: Date.now(),
 
                                     }).then(() => {
                                         

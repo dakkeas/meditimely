@@ -1,4 +1,4 @@
-import { Dimensions, StatusBar, Pressable, View, Text, StyleSheet, Button, TextInput, ScrollView } from "react-native";
+import { Dimensions, StatusBar, Pressable, View, Text, StyleSheet, Button, TextInput, ScrollView, Alert} from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import React, { Component } from "react";
 import ButtonTemplate from "@/components/ButtonTemplate";
@@ -7,21 +7,55 @@ import { useEffect, useState } from "react";
 const WIDTH = Dimensions.get('window').width;
 import Doctors from "../Doctors.json"
 import { useNavigation } from "@react-navigation/native";
+import { getDatabase, ref, set } from "firebase/database";
+import CircularLoading from "@/components/CircularLoading";
+import { checkEmpty } from "@/auth";
+
 export default function ScheduleAppointmentScreen({route}) {
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    
+    // initialize database
+    const db = getDatabase();
+    
+
+    const [selectedDoctorID, setSelectedDoctorId] = useState('')
+    
+    const [selectedDoctor, setSelectedDoctor] = useState('')
+    const [selectedTime, setSelectedTime] = useState('')
+    const [selectedStartDate, setSelectedStartDate] = useState('');
+
+
 
     const navigation = useNavigation();
     const onDateChange = (date) => {
         setSelectedStartDate(date);
     };
 
-    const {clinicObject} = route.params
-    const startDate = selectedStartDate ? selectedStartDate.toString() : "";
 
+    const {clinicObject} = route.params
+    const {clinicId} = route.params
+    const {useruid} = route.params
+
+    const startDate = selectedStartDate ? selectedStartDate.toString() : "";
+     
+    // map doctors for drop down format
     const doctorData = Object.values(clinicObject.doctors).map(doctor => ({
         key: doctor.id.toString(),
         value: `${doctor.name}, ${doctor.specialty}`
     }));
+
+    // const doctorDataObject = Object.values(clinicObject.doctors).reduce((acc, doctor) => {
+    //     acc[doctor.id] = `${doctor.name}, ${doctor.specialty}`;
+    //     return acc;
+    // }, {});
+
+    
+    const doctorObject = Object.fromEntries(
+        Object.values(clinicObject.doctors).map(item => [item.id, item])
+    );
+
+    
+    
+
 
     const timeData = 
         [
@@ -36,12 +70,53 @@ export default function ScheduleAppointmentScreen({route}) {
             "05:00 PM"
         ]
     
-    const [selectedDoctor, setSelectedDoctor] = useState('')
-    const [selectedTime, setSelectedTime] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
     
 
+    
+    const [isLoading, setIsLoading] = useState(false)
+    
         
+    const [errorMessage, setErrorMessage] = useState("")
+    
+    
+    async function writeAppointment(date, time, doctorIndex, clinicid, useruid) {
+        setIsLoading(true)
+        try {
+            // doctor id
+            // 
+
+            const id = Date.now();
+            await set(ref(db, 'appointments/' + `${useruid}/` + id), {
+                clinicID: clinicid,
+                doctorID: doctorObject[doctorIndex].id,
+                doctorName:  doctorObject[doctorIndex].name,
+                doctorRating: doctorObject[doctorIndex].rating,
+                doctorSpecialty: doctorObject[doctorIndex].specialty,
+                hospitalName: clinicObject.hospitalName,
+                date: date, 
+                time: time,
+                status: "PENDING",
+                
+            })
+            
+            
+            // setIsLoading(false) 
+        } catch (error){
+            // setIsLoading(false) 
+            console.error('Error writing document: ', error)
+            setErrorMessage('Failed to book appointment')
+
+        } finally {
+            setIsLoading(false);
+            
+        }
+    }
+    
+    if (isLoading) {
+        return (
+            <CircularLoading></CircularLoading>
+        )
+    }
 
 
     return (
@@ -141,7 +216,7 @@ export default function ScheduleAppointmentScreen({route}) {
                                 }}
                                     // setSelected={(val) => setSelected(val)}
                                     data={doctorData}
-                                    save="value"
+                                    save="key"
                                 />
                                 
                             </View>
@@ -151,16 +226,40 @@ export default function ScheduleAppointmentScreen({route}) {
                                 <Text style={styles.selectedDateTitle}> NUMBER OF APPOINTMENTS: </Text>
                                 <Text style={styles.dateText}>{startDate != "" ? "3" : ""}</Text>
                             </View>
+                        <Text style={styles.errorMessage}>{errorMessage ? errorMessage : ""}</Text>
                         </View>
 
 
                     </View>
                 </View>
 
+
                 <ButtonTemplate
                     title="Finish Appointment"
                     onPress={()=> {
-                        navigation.navigate("Home Screen")
+
+                        console.log(selectedDoctor)
+                        // console.log(doctorDataObject[selectedDoctor])
+                        switch(true) {
+                            case checkEmpty(selectedStartDate):
+                                setErrorMessage('No date is selected')
+                                break
+                            case checkEmpty(selectedTime):
+                                setErrorMessage('No time is selected')
+                                break
+                            case checkEmpty(selectedDoctor):
+                                setErrorMessage('No doctor is selected')
+                                break
+                            default:
+                                console.log("booking...")
+                                
+                                setErrorMessage('')
+                                writeAppointment(selectedStartDate, selectedTime, selectedDoctor, clinicId, useruid)
+                                navigation.navigate('Home Screen')
+                                Alert.alert('Booking Complete', `You have successfully created your appointment with ${doctorObject[selectedDoctor].name} at ${clinicObject.hospitalName}`)
+
+                        }
+                        
                     }}  
                     buttonStyle={{
                         backgroundColor: "rgba(31,159,162,0.19)"
@@ -238,7 +337,12 @@ const styles = StyleSheet.create({
         rowGap: 10,
         // backgroundColor: "yellow"
         // height: 120,
-    }
+    },
 
+    errorMessage: {
+        fontFamily: "Poppins_600SemiBold",
+        color: "red",
+
+    },
 
 })
