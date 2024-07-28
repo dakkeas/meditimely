@@ -4,13 +4,15 @@ import {
     Text,
     SafeAreaView,
     ActivityIndicator,
-    StyleSheet
+    StyleSheet,
+    StatusBar
 } from "react-native"
 
 
 export default function CircularLoading() {
     return (
         <SafeAreaView style={styles.loadingContainer}>
+            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
             <ActivityIndicator size="large" color="grey">
             </ActivityIndicator>
             <View style={styles.container}>

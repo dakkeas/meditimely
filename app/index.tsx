@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 
 import { BottomNavigation} from 'react-native-paper';
 import ScheduleAppointmentScreen from "@/screens/ScheduleAppointmentScreen";
+import { jsiConfigureProps } from "react-native-reanimated/lib/typescript/reanimated2/core";
 // const theme = useTheme();
 // theme.colors.secondaryContainer = "transparent"
 
@@ -58,8 +59,7 @@ function SpecialistInfoStack(props){
                     header: () =>
             (
             <View style={{ 
-                height:10,
-                backgroundColor: "yellow",
+                
                 }}>
                 <View>
                     <Text>TITLE</Text>
@@ -76,11 +76,12 @@ function SpecialistInfoStack(props){
     )
 }
 
-function MainScreen(props) {
+function MainScreen({props}) {
+
     return (
         <Tab.Navigator
         screenOptions={{
-            tabBarActiveTintColor: '#1F9FA2',
+            tabBarActiveTintColor: '#27ccd2',
             headerShown: false,
             tabBarShowLabel: false,
             tabBarStyle: {
@@ -103,7 +104,7 @@ function MainScreen(props) {
                             
                             <MaterialIcons name="home" size={24} color={color} />
                 ),
-                // tabBarColor: "#1F9FA2",
+                // tabBarColor: "#27ccd2",
 
             }}
 
@@ -117,7 +118,7 @@ function MainScreen(props) {
                 tabBarIcon: ({ color }) => (
                     <MaterialIcons name="list-alt" size={24} color={color} />
                 ),
-                // tabBarColor: "#1F9FA2",
+                // tabBarColor: "#27ccd2",
                 header: (props) => (
                     <View style={styles.appointmentsHeader}>
                         <View style={[styles.container]}>
@@ -135,13 +136,21 @@ function MainScreen(props) {
             component={SettingsScreen}
             options={{
 
-
+                headerShown: true,
                 tabBarLabel: "Settings",
                 tabBarIcon: ({ color }) => (
                     <MaterialIcons name="settings" size={24} color={color} />
                 ),
-                // tabBarColor: "#1F9FA2",
+                // tabBarColor: "#27ccd2",
+                header: (props) => (
+                    <View style={styles.appointmentsHeader}>
+                        <View style={[styles.container]}>
+                            <Text style={styles.headerAppointmentsText}>Settings</Text>
+                        </View>
 
+                    </View>
+
+                ),
             }}
             ></Tab.Screen>
         </Tab.Navigator>
@@ -157,31 +166,17 @@ function HomeScreenStack(props) {
                 
                 options={{
                     // headerTitle: (props) => ,
-                    header: (props) => (
-                        <View style={styles.homeHeader}>
-                            <View style={[styles.container, { flexDirection: "row", columnGap: 10 }]}>
-                                <MaterialIcons name="account-circle" size={32} color="white" />
-                                <Text style={styles.headerGreetText}>Welcome back, McAllen!</Text>
-                                </View>
-                            
-                        </View>
-                        
-                    ),
+
                     headerShown: true,
                     // headerBackVisible: true,
                     headerTitle: "",
                     
                     headerStyle: {
-                        backgroundColor: "#1F9FA2",
+                        backgroundColor: "#27ccd2",
                         
                     },
                     headerTintColor: "white",
-                    headerLeft: (props) => (
-                        <View style={[styles.container, { flexDirection: "row", columnGap: 10 }]}>
-                            <MaterialIcons name="account-circle" size={32} color="white" />
-                            <Text style={styles.headerGreetText}>Welcome back, McAllen!</Text>
-                        </View>
-                )}}
+                }}
             >
             </Stack.Screen>
 
@@ -198,7 +193,7 @@ function HomeScreenStack(props) {
                 headerTitleAlign: "center",
                 headerTitle: "Schedule an Appointment",
                 headerStyle: {
-                    backgroundColor: "#1F9FA2"
+                    backgroundColor: "#27ccd2"
                 },
                 headerTitleStyle: {
                     fontSize: 16,
@@ -224,7 +219,7 @@ function SignUpStack(props) {
         <Stack.Navigator
         screenOptions={{
             headerStyle: {
-                backgroundColor: "#1F9FA2",
+                backgroundColor: "#27ccd2",
             },
             headerTitle: "",
             headerTintColor: "white"
@@ -237,7 +232,7 @@ function SignUpStack(props) {
             component={SignUpEmailScreen} 
             options= {{
                 headerTitle: "",
-                headerLeft: () => <TouchableOpacity onPress={() => navigation.navigate("Welcome")}><Text style={styles.headerBackText}>Cancel</Text></TouchableOpacity>,
+                headerLeft: () => <TouchableOpacity onPress={() => navigation.navigate("Landing")}><Text style={styles.headerBackText}>Cancel</Text></TouchableOpacity>,
                 // headerStyle: {
                     
                 // }
@@ -264,6 +259,47 @@ function SignUpStack(props) {
     );
 }
 
+function LandingStack(props) {
+
+    const navigation = useNavigation();
+
+
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}
+                      
+        >
+            <Stack.Screen name="Landing" component={LandingScreen}></Stack.Screen>
+
+            <Stack.Screen name="Sign Up" component={SignUpStack}></Stack.Screen>
+
+            <Stack.Screen
+                name="Login" component={LoginScreen}
+                options={{
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#27ccd2",
+                    },
+                    headerTitle: "",
+                    headerTintColor: "white",
+                    headerTitle: "Login",
+                    headerTitleAlign: "center",
+                    headerTitleStyle: {
+                        fontFamily: "Poppins_600SemiBold",
+                        fontSize: 16,
+                    },
+
+                }}
+
+
+            ></Stack.Screen>
+
+        </Stack.Navigator>
+    );
+}
+
 
 export default function App() {
 
@@ -283,50 +319,24 @@ export default function App() {
        independent={true}
        
         >
-        <Stack.Navigator
-        screenOptions={{
-            headerShown: false
-        }}
-        
-        >
-
-            
-            {/* re routes to either login or sign up stack */}
-            <Stack.Screen name="Welcome" component={LandingScreen}></Stack.Screen>
-
-            <Stack.Screen name="Sign Up" component={SignUpStack}></Stack.Screen>
-
-            <Stack.Screen 
-            name="Login" component={LoginScreen}
-            options={{
-                headerShown: true,
-                headerStyle: {
-                    backgroundColor: "#1F9FA2",
-                },
-                headerTitle: "",
-                headerTintColor: "white",
-                headerTitle: "Login",
-                headerTitleAlign: "center",
-                headerTitleStyle: {
-                    fontFamily: "Poppins_600SemiBold",
-                    fontSize: 16,
-                },
-                
+            <Stack.Navigator
+            screenOptions={{
+                headerShown: false
             }}
-            
+            >
 
-            ></Stack.Screen>
-
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                    headerBackVisible: false,
-                }}
-                name="Main" component={MainScreen}>
-
+                <Stack.Screen name="Landing Stack" component={LandingStack}></Stack.Screen>
                 
+                <Stack.Screen
+                    options={{
+                        headerShown: false,
+                        headerBackVisible: false,
+                    }}
+                    name="Main" component={MainScreen}>
                 </Stack.Screen>
-        </Stack.Navigator>
+                
+
+            </Stack.Navigator>
             
         </NavigationContainer>
     )
@@ -352,23 +362,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    headerGreetText: {
-        color: "white",
-        fontFamily: "Poppins_400Regular",
-        fontSize: 14,
-        alignSelf: "flex-end"
-    },
-    homeHeader: {
-        height: 60,
-        backgroundColor: "#0F9FA2",
-        // flex: 0,
-        alignItems: "flex-start",
-        justifyContent: "center",
-        paddingHorizontal: 19
-    },
     appointmentsHeader: {
         height: 60,
-        backgroundColor: "#0F9FA2",
+        backgroundColor: "#27ccd2",
         // flex: 0,
         alignItems: 'center',
         justifyContent: "flex-end",

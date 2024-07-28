@@ -5,7 +5,7 @@ import { Pressable, View, Text, StyleSheet, Button, TextInput, ScrollView } from
 export default function DiseasesScreen() {
     return (
         <View style={styles.container}>
-            <Text>HEY</Text>
+            <Text></Text>
         </View>
     )
 }

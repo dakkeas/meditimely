@@ -39,7 +39,7 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
+            <StatusBar backgroundColor="#27ccd2"></StatusBar>
             <Text style={styles.title}>Welcome back!</Text>
             
             <Text style={styles.sectionInfoText}>
@@ -70,7 +70,7 @@ export default function LoginScreen() {
             <ButtonTemplate
                 title="Login"
                 buttonStyle={{
-                    backgroundColor: "#1F9FA2",
+                    backgroundColor: "#27ccd2",
                     marginTop: 10
                 }}
                 textStyle={{
@@ -92,9 +92,10 @@ export default function LoginScreen() {
                                     // Signed in 
                                     const user = userCredential.user;
                                     // ...
-                                    setIsLoading(false)
-                                    navigation.navigate("Main")
                                     console.log('successfully logged in!')
+                                    console.log(user.uid)
+                                    navigation.navigate("Main")
+
                                 })
                                 .catch((error) => {
                                     setErrorMessage(error.code)

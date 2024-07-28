@@ -12,11 +12,13 @@ import { Dimensions,
     FlatList, 
     TouchableOpacity,
     Touchable, 
-    Alert
+    Alert,
+    
 } from "react-native";
 // import { SearchBar } from "react-native-elements";
 import { SearchBar } from "react-native-screens";
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+import { CommonActions } from '@react-navigation/native';
 import ClinicCard from "@/components/clinicCard";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -31,9 +33,9 @@ import Reviews from "../Reviews.json"
 import { jsiConfigureProps } from "react-native-reanimated/lib/typescript/reanimated2/core";
 import firebaseConfig from "@/firebase_setup";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { child, getDatabase, ref, set, onValue, get} from "firebase/database";
 import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut} from "firebase/auth";
 import CircularLoading from "@/components/CircularLoading";
 // firebase setup
 const app = initializeApp(firebaseConfig);
@@ -107,7 +109,7 @@ const ClinicDetails = ({
                 {/* <ButtonTemplate
                                                 title="Open in Maps"
                                                 buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", height: 40 }}
-                                            textStyle={{ color: "#1F9FA2" }}
+                                            textStyle={{ color: "#27ccd2" }}
                                             ></ButtonTemplate> */}
                 <TouchableOpacity>
                     <View style={styles.expandSectionContainer}>
@@ -126,39 +128,6 @@ const DoctorsDetails = ({
 }) => {
       const navigation = useNavigation();
 
-    const doctors =
-        [
-            {
-                "id": 1,
-                "name": "Dr. Juan dela Cruz",
-                "specialty": "Cardiology",
-                "location": "Manila, Philippines",
-                "experience": "15 years",
-                "image": require("../assets/images/doctor1.jpg"), // Example image path
-                "ratings": 4.8,
-                "reviews": 120
-            },
-            {
-                "id": 2,
-                "name": "Dr. Maria Santos",
-                "specialty": "Pediatrics",
-                "location": "Quezon City, Philippines",
-                "experience": "12 years",
-                "image": require("../assets/images/doctor2.jpg"), // Example image pathKjKj
-                "ratings": 4.9,
-                "reviews": 90
-            },
-            {
-                "id": 3,
-                "name": "Dr. Josefa Reyes",
-                "specialty": "Orthopedics",
-                "location": "Cebu City, Philippines",
-                "experience": "18 years",
-                "image": require("../assets/images/doctor3.jpg"), // Example image path
-                "ratings": 4.7,
-                "reviews": 150
-            }
-        ]
     const doctorProfile = require("../assets/images/doctor_profile.jpg");
     return (
         <View style={styles.clinicDoctorsContainer}>
@@ -289,10 +258,14 @@ const SpecialistBox = ({
 }
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ route }) {
+
+    
+    
+    
     const specialistActive = {
-        backgroundColor: 'rgba(31, 159, 162, 0.19)',
-        borderColor: "rgba(31, 159, 162, 0.25)",
+        backgroundColor: 'rgba(39,204,210,0.33)',
+        borderColor: "rgba(39,204,210,0.33)",
     }
     
 
@@ -328,8 +301,8 @@ export default function HomeScreen() {
     const [detailActive, setDetailActive] = useState(0)
     const [clinicList, setClinicList] = useState("")
 
-    function fetchData(databaseRef, node) {
-        const nodeRef = ref(databaseRef, node);
+    function fetchClinicData() {
+        const nodeRef = ref(db, 'clinics');
 
         onValue(nodeRef, (snapshot) => {
             const data = snapshot.val();
@@ -357,7 +330,7 @@ export default function HomeScreen() {
     
     useEffect(()=>{
         // display clinics when home page mounts
-        fetchData(db, 'clinics')
+        fetchClinicData(db, 'clinics')
         
     }, [])
     
@@ -391,7 +364,6 @@ export default function HomeScreen() {
     }
 
 
-    const [isLoading, setIsLoading] = useState(false)
     
     
     if (isLoading) {
@@ -402,29 +374,103 @@ export default function HomeScreen() {
 
 
     const auth = getAuth();
+
     useEffect(
+    // removes default function of back button
         () =>
             navigation.addListener('beforeRemove', (e) => {
                 // if (!hasUnsavedChanges) {
                 //     // If we don't have unsaved changes, then we don't need to do anything
                 //     return;
                 // }
-
                 // // Prevent default behavior of leaving the screen
                 e.preventDefault();
-
                 // Prompt the user before leaving the screen
-
             }),
         [navigation]
     );
+    
 
+    // obtaining user unique id
+    const [useruid, setUseruid] = useState('')
+    const userRef = ref(db, 'users/' + useruid + '/userInfo');
+    const [userFirstName, setUserFirstName] = useState('Guest')
+    const [userLastName, setUserLastName] = useState('Guest')
+    const [userData, setUserData] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+            setUseruid(user.uid);
+        } else {
+            // setError('No user op in');
+            console.error('No user logged in')
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (useruid) {
+            const userRef = ref(db, `users/${useruid}/userInfo`);
+
+            const unsubscribe = onValue(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    setUserData(data);
+                    setUserFirstName(data.fname || 'Guest');
+                    setUserLastName(data.lname || 'Guest');
+                    setIsLoading(false);
+                } else {
+                    console.error('User data not found');
+                    setIsLoading(false);
+                }
+            }, (error) => {
+                console.error('Error fetching data:', error);
+                console.error(error.message);
+                setIsLoading(false);
+            });
+
+            // Cleanup listener on component unmount
+            return () => unsubscribe();
+        }
+    }, [useruid]);
+
+    useEffect(() => {
+        if (!isLoading && userData) {
+            navigation.setOptions({
+                header: () => (
+                    <View style={styles.homeHeader}>
+                        <View style={[styles.container, { flexDirection: "row", columnGap: 10 }]}>
+                            <MaterialIcons name="account-circle" size={30} color="white" />
+                            <Text style={styles.headerGreetText}>Welcome back, {userFirstName} {userLastName}</Text>
+                        </View>
+                    </View>
+                ),
+            });
+        }
+    }, [userData, isLoading]);
+
+        
+
+    const [refreshing, setRefreshing] = useState(false);
+
+   function handleRefresh() {
+        setRefreshing(true)
+        fetchClinicData()
+        setRefreshing(false)
+        
+   } 
+
+     
     return (
             <View style={styles.homePageContainer}>
-            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
+            <StatusBar backgroundColor="#27ccd2"></StatusBar>
                 <ScrollView
                 showsVerticalScrollIndicator={false}
-                >
+                >   
                 
                     <View style={{rowGap: 10}}>
 
@@ -521,7 +567,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={styles.homeSection}>
                         <View style={[styles.sectionTextRowContainer]}>
-                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#52BE80" }]}>
+                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#fe8b5c" }]}>
                                     <View style={{ alignSelf: "center" }}>
                                         <MaterialIcons name="near-me" size={14} color="white" />
 
@@ -534,7 +580,10 @@ export default function HomeScreen() {
 
                             </View>
                                  <FlatList
+                                 refreshing = {refreshing}
 
+
+                                    onRefresh={handleRefresh}
                                  
                                  data={clinicList}
                                  initialNumToRender={2}
@@ -580,7 +629,7 @@ export default function HomeScreen() {
 
                     }]}>
                         <View style={styles.sectionTextRowContainer}>
-                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#A569BD"}]}>
+                            <View style={[styles.sectionTitleContainer, { backgroundColor: "#fe8b5c"}]}>
                                 <View style={{ alignSelf: "center" }}>
                                     <MaterialIcons name="stars" size={14} color="white" />
 
@@ -595,6 +644,8 @@ export default function HomeScreen() {
                         <FlatList
 
 
+                            refreshing = {refreshing}
+                            onRefresh={handleRefresh}
                             data={clinicList}
                             initialNumToRender={2}
                             horizontal
@@ -700,6 +751,7 @@ export default function HomeScreen() {
                                         <View style={styles.detailsTabContainer}>
                                             <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, {borderTopLeftRadius: 3, borderBottomLeftRadius: 3} ]}
                                             onPress={() => setDetailActive(0)}
+
                                             >
                                             <Text style={[styles.detailTabButtonText, detailActive === 0 ? { color: "white" } : null]}>Details</Text>
                                             </TouchableOpacity>
@@ -729,11 +781,13 @@ export default function HomeScreen() {
                                 title="Book an Appointment"
                                 buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", marginTop: 10 }}
                                 onPress={() => {
-                                    navigation.navigate('Schedule')
+                                    navigation.navigate('Schedule', {
+                                        clinicObject: clinicModalObject
+                                    })
                                     setisClinicModalVisible(!isClinicModalVisible)
                                 }}
 
-                                textStyle={{ color: "#1F9FA2" }}
+                                textStyle={{ color: "#27ccd2" }}
                             >
 
                             </ButtonTemplate>      
@@ -759,14 +813,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 12,
         paddingHorizontal: 5,
-        color: "#feb346"
+        color: "#fe8b5c"
     },
     sectionTextRowContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
     },
     specialistText: {
-        
+        color: "darkgrey",  
         fontFamily: "Poppins_400Regular",
         fontSize:10,
         textAlign: "center",
@@ -812,7 +866,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#DC7633",
+        backgroundColor: "#fe8b5c",
         paddingHorizontal: 10,
         paddingVertical: 1,
         columnGap: 5,
@@ -837,7 +891,7 @@ const styles = StyleSheet.create({
         
     },
     filterIcon: {
-        backgroundColor: "#FF8A5B",
+        backgroundColor: "#fe8b5c",
         borderRadius: 3,
         alignSelf: "center",
         padding: 12
@@ -890,7 +944,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     clinicModalContainer: {
-        backgroundColor: "#1F9FA2",
+        backgroundColor: "#27ccd2",
         // height: HEIGHT,
        
         
@@ -922,7 +976,7 @@ const styles = StyleSheet.create({
         // flex: 0,
         flexShrink: 0, // Ensure this child does not shrink beyond its content size
         flexGrow: 0, // Prevent this child from growing beyond its content size
-        // backgroundColor: "#1F9FA2",
+        // backgroundColor: "#27ccd2",
 
     },
     clinicDistanceContainer :{
@@ -1080,7 +1134,7 @@ const styles = StyleSheet.create({
     },
     detailTabButtonText: {
         fontFamily: "Poppins_600SemiBold",
-        color: "#FF8A5B",
+        color: "#fe8b5c",
         fontSize: 12,
     },
     detailTabButton: {
@@ -1104,6 +1158,23 @@ const styles = StyleSheet.create({
         backgroundColor: "#DC7633",
         
         borderRadius: 3,
-    }
+    },
+    headerGreetText: {
+        paddingTop: 5,
+        color: "white",
+        fontFamily: "Poppins_400Regular",
+        fontSize: 16,
+        alignSelf: 'flex-end'
+    },
+    homeHeader: {
+        height: 60,
+        backgroundColor: "#27ccd2",
+        // flex: 0,
+        alignItems: "flex-start",
+        justifyContent: "center",
+        paddingHorizontal: 19
+    },
 
 })
+
+    

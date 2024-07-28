@@ -1,4 +1,4 @@
-import { TouchableOpacity,FlatList, Pressable, View, Text, StyleSheet, Button, TextInput, ScrollView } from "react-native";
+import { StatusBar, TouchableOpacity,FlatList, Pressable, View, Text, StyleSheet, Button, TextInput, ScrollView } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons';
 import specialistList from "../specialistList.json";
@@ -8,6 +8,7 @@ export default function SpecialistInfoScreen() {
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor="white"></StatusBar>
             <View style={styles.descriptionContainer}>
                 <Text style={styles.descriptionTitle}>Find the right expert for your symptoms</Text>
                 <Text style={styles.descriptionPara}>While you might refer to them simply as doctors, many physicians specialize in particular fields of medicine.</Text>
@@ -15,6 +16,7 @@ export default function SpecialistInfoScreen() {
 
             <View style={styles.specialistInfoPressableContainer}>
                 <FlatList
+                
                 data = {specialistList}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => <View style={{ height: 5}} />}
@@ -23,8 +25,8 @@ export default function SpecialistInfoScreen() {
                         
                         <TouchableOpacity
                         onPress={() => {
-                            
-                            navigation.navigate('Diseases')
+                            // navigation.navigate('Diseases')
+                            // 
                         }}
                         
                         >
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
         fontFamily: "Poppins_400Regular"   
     },
     specialistInfoPressableContainer: {
-        
+        marginBottom: 28,
         flex: 1,
         // backgroundColor: "yellow"
     },

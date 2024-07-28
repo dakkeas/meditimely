@@ -57,7 +57,7 @@ export default function SignUpInfoScreen({ route }) {
 
     const toggleActive = {
         backgroundColor: 'rgba(31, 159, 162, 0.19)',
-        borderColor: "#1F9FA2"
+        borderColor: "#27ccd2"
     }
     
 
@@ -217,9 +217,10 @@ export default function SignUpInfoScreen({ route }) {
                 </View>
                 <View style={styles.checkboxContainer}>
                     <CheckBox
+                    color="#27ccd2"
                     style={{
                         marginTop: 5,
-                        
+                        color: "red" 
                     }}
                     disabled={false}
                     value={toggleCheckBox}
@@ -233,7 +234,7 @@ export default function SignUpInfoScreen({ route }) {
                 <ButtonTemplate
                 title="Continue"
                 buttonStyle={{
-                    backgroundColor: "#1F9FA2"
+                    backgroundColor: "#27ccd2"
                 }}
                 textStyle={{
                     color: "white",
@@ -275,7 +276,7 @@ export default function SignUpInfoScreen({ route }) {
 
                                     }).then(() => {
                                         
-                                        navigation.navigate('Welcome')
+                                        navigation.navigate('Landing')
                                         setIsLoading(false)
                                     })
 

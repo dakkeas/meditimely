@@ -17,7 +17,7 @@ export default function AppointmentScreen() {
                     <View style={styles.doctorRatingContainer}>
                         {/* <Text>Stars</Text>  */}
                         <MaterialIcons name="star" size={16} color="#FFD700" />
-                        <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#1F9FA2", fontSize: 12,}}>4.8</Text>
+                        <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#27ccd2", fontSize: 12,}}>4.8</Text>
                     </View>
                 </View>
                 <View style={styles.doctorInformationContainer}>
@@ -27,7 +27,7 @@ export default function AppointmentScreen() {
                         <Text style={styles.specializationText}>Cardiologist</Text>
                     </View>
                     <View style={styles.bookingStatusContainer}>
-                        <Text style={{ color: "#1F9FA2", fontFamily: "Poppins_400Regular", fontSize: 12,}}>Status: </Text>
+                        <Text style={{ color: "#27ccd2", fontFamily: "Poppins_400Regular", fontSize: 12,}}>Status: </Text>
                         <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                             <Text style={styles.bookingStatusText}>PENDING</Text>
                         </View>
@@ -147,17 +147,17 @@ const styles = StyleSheet.create({
     doctorSpecialtyText: {
         fontFamily: "Poppins_400Regular",
         fontSize: 12,
-        color: "#1F9FA2"
+        color: "#27ccd2"
     },
     doctorNameText: {
         
         fontSize: 12,
         fontFamily: "Poppins_400Regular",
-        color: "#1F9FA2"
+        color: "#27ccd2"
     },
     clinicBookedText: {
         fontFamily: "Poppins_600SemiBold",
-        color: "#1F9FA2"
+        color: "#27ccd2"
 
     },
     doctorInformationContainer: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(31,159,162,0.19)",
         borderRadius: 5,
         // borderWidth: 1,
-        // borderColor: "#1F9FA2",
+        // borderColor: "#27ccd2",
         paddingHorizontal: 20,
         
     },
