@@ -16,7 +16,7 @@ export default function ClinicCard({
 
     return (
         
-            <View style={[styles.mainCardContainer, styles.boxShadow]}>
+            <View style={[styles.mainCardContainer]}>
                 <View style={styles.visualCardContainer}>
                     <View style={styles.clinicImageContainer}>
                         <Image resizeMode= "cover" source={imageSource} style={styles.clinicImage}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     clinicLocationText: {
         fontSize: 10,
-        color:  "#27ccd2",
+        color:  "#00807f",
         fontFamily: "Poppins_400Regular"
 
     },
@@ -102,10 +102,9 @@ const styles = StyleSheet.create({
         
     },
     mainCardContainer: {
-        backgroundColor: "rgba(39,204,210,0.19)",
-        borderRadius: 5,
-        padding: 5,
-        // flexDirection: "row",
+        backgroundColor: "rgba(0,128,127,0.19)",
+        borderRadius: 12,
+        padding: 8,
         flex: 1,
         maxWidth: 200,
         height: 160,
@@ -118,14 +117,14 @@ const styles = StyleSheet.create({
     clinicNameText: {
         fontFamily: "Poppins_600SemiBold",
         // borderRadius: 7,
-        color: "#27ccd2",
-        borderRadius: 3,
+        color: "#00807f",
+        // borderRadius: 12,
         fontSize: 12,
         // backgroundColor: "yellow"
     },
     clinicImage: {
         flex: 1,
-        borderRadius: 2,
+        borderRadius: 8,
         height: "100%"
 
     },
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
         fontSize:10,
         textAlign: "center",
         fontFamily: "Poppins_400Regular",
-        // color: '#27ccd2',
+        // color: '#00807f',
         color: "white",
      
     },

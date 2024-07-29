@@ -26,7 +26,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import specialistList from "../specialistList.json";
 import ButtonTemplate from "@/components/ButtonTemplate";
-const clinicImage = require('../assets/images/clinic_graphic.jpg')
+const clinicImage = require('../assets/images/clinic_image3.jpg')
 const clinicImage2 = require('../assets/images/clinic_image2.jpg')
 const clinicImage3 = require('../assets/images/clinic_image3.jpg')
 import Reviews from "../Reviews.json"
@@ -76,7 +76,7 @@ const ClinicDetails = ({
 
             <View style={styles.detailsContainer}>
                 <View style={styles.detailRow}>
-                    <MaterialIcons name="medical-information" size={20} color="#F5B041" />
+                    <MaterialIcons name="medical-information" size={20} color="#fe8b5c" />
 
                     <View style={[styles.clinicSpecializationsRow, { width: WIDTH - 90 }]}>
                         {
@@ -93,23 +93,23 @@ const ClinicDetails = ({
                     </View>
                 </View>
                 <View style={styles.detailRow}>
-                    <MaterialIcons name="local-phone" size={20} color="#F5B041" />
+                    <MaterialIcons name="local-phone" size={20} color="#fe8b5c" />
                     <Text style={styles.detailText}>+639164137270</Text>
                 </View>
 
                 <View style={styles.detailRow}>
-                    <MaterialIcons name="email" size={20} color="#F5B041" />
+                    <MaterialIcons name="email" size={20} color="#fe8b5c" />
                     <Text style={styles.detailText}>alvarexhospitalmedical@gmail.com</Text>
                 </View>
                 <View style={styles.detailRow}>
-                    <MaterialIcons name="location-city" size={20} color="#F5B041" />
+                    <MaterialIcons name="location-city" size={20} color="#fe8b5c" />
                     <Text style={styles.detailText}>{clinicDataObject.location}</Text>
                 </View>
 
                 {/* <ButtonTemplate
                                                 title="Open in Maps"
-                                                buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", height: 40 }}
-                                            textStyle={{ color: "#27ccd2" }}
+                                                buttonStyle={{ backgroundColor: "rgba(0,128,127,0.19)", height: 40 }}
+                                            textStyle={{ color: "#00807f" }}
                                             ></ButtonTemplate> */}
                 <TouchableOpacity>
                     <View style={styles.expandSectionContainer}>
@@ -259,15 +259,10 @@ const SpecialistBox = ({
 
 
 export default function HomeScreen({ route }) {
-
-    
-    
     
     const specialistActive = {
-        backgroundColor: 'rgba(39,204,210,0.33)',
-        borderColor: "rgba(39,204,210,0.33)",
+        // color that sticks when a specialist is selected
     }
-    
 
     const navigation = useNavigation();
     const [search, updateSearch] = useState('')
@@ -275,6 +270,7 @@ export default function HomeScreen({ route }) {
     const [specialistSelected, setSpecialistSelected] = useState('')
     const [isClinicModalVisible, setisClinicModalVisible] = useState(false)
 
+    const [errorMessage, setErrorMessage] = useState('')
 
     const [imgActive, setImgActive] = useState(0)
     onchange = (nativeEvent) => {
@@ -316,7 +312,6 @@ export default function HomeScreen({ route }) {
         let totalRatings = 0
 
         if (reviews) {
-            // console.log(Object.values(reviews))
             Object.values(reviews).forEach(star => {
                 totalSum += star.rating
                 totalRatings++
@@ -336,7 +331,6 @@ export default function HomeScreen({ route }) {
     
 
     // CLINIC MODAL VARIABLES
-    //
     const [clinicModalIndex, setClinicModalIndex] = useState('')
     const [clinicModalObject, setClinicModalObject] = useState({})
     const renderDetailContent = (tab) => {
@@ -467,7 +461,7 @@ export default function HomeScreen({ route }) {
      
     return (
             <View style={styles.homePageContainer}>
-            <StatusBar backgroundColor="#27ccd2"></StatusBar>
+            <StatusBar backgroundColor="#00807f"></StatusBar>
                 <ScrollView
                 showsVerticalScrollIndicator={false}
                 >   
@@ -479,7 +473,10 @@ export default function HomeScreen({ route }) {
                         >
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate('Search')
+
+                                    navigation.navigate('Search', {
+                                        useruid: useruid
+                                    })
                                     
                                 }}
                                 style={styles.searchContainer}
@@ -543,9 +540,33 @@ export default function HomeScreen({ route }) {
                                  renderItem={({item})=> {
                                     return(
                                         <TouchableOpacity onPress={()=>{
-                                            console.log(specialistSelected)
+                                            // on press of specialist
+                                            
                                             setSpecialistSelected(item.name)
-                                            navigation.navigate('Search')
+                                            navigation.navigate('Search', {
+                                                useruid: useruid
+                                            })
+                                            
+                                            writeSpecialistSelected(specialistSelected)
+                                            async function writeSpecialistSelected(specialistSelected) {
+                                                try { 
+                                                    setIsLoading(true)
+                                                    await set(ref(db, `specialistSelected/`), {
+                                                        userWants: specialistSelected,
+                                                        hospitalList: ""
+                                                    })
+                                                        
+                                                } catch (error) {
+                                                    console.error('Error writing document: ', error)
+                                                    setErrorMessage('Failed to book appointment')
+                                                    
+
+                                                } finally {
+                                                    setIsLoading(false)
+
+                                                }
+                                            }
+                                            
                                         }}>
                                         
                                             <SpecialistBox
@@ -580,10 +601,7 @@ export default function HomeScreen({ route }) {
 
                             </View>
                                  <FlatList
-                                 refreshing = {refreshing}
-
-
-                                    onRefresh={handleRefresh}
+                                 
                                  
                                  data={clinicList}
                                  initialNumToRender={2}
@@ -595,11 +613,9 @@ export default function HomeScreen({ route }) {
                                     return (
                                         <TouchableOpacity
                                             onPress={() => {
-                                                console.log(clinicList) 
                                                 setisClinicModalVisible(!isClinicModalVisible)
                                                 setClinicModalIndex(index)
                                                 setClinicModalObject(item)
-                                                console.log(clinicModalIndex)
                                                 
                                             }}
                                         >
@@ -661,7 +677,7 @@ export default function HomeScreen({ route }) {
                                             setisClinicModalVisible(!isClinicModalVisible)
                                             setClinicModalIndex(index)
                                             
-                                            console.log(clinicModalIndex)
+                                            // console.log(clinicModalIndex)
                                             setClinicModalObject(item)
 
                                         }}
@@ -737,13 +753,11 @@ export default function HomeScreen({ route }) {
                                                 snapToAlignment="start"
                                                 pagingEnabled
                                                 decelerationRate={"normal"}
-
-
                                                 ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
                                                 showsHorizontalScrollIndicator={false}
                                                 renderItem={({ item }) => {
                                                     return (
-                                                        <Image source={item.source} style={{ height: "100%", width: WIDTH - 40, flex: 1, borderRadius: 10 }}></Image>
+                                                        <Image source={item.source} style={{ height: "100%", width: WIDTH - 40, flex: 1, borderRadius: 24}}></Image>
 
                                                     )
                                                 }}
@@ -753,7 +767,7 @@ export default function HomeScreen({ route }) {
                                         </View>
                                     <View style={{rowGap: 15, flex: 1}}>
                                         <View style={styles.detailsTabContainer}>
-                                            <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, {borderTopLeftRadius: 3, borderBottomLeftRadius: 3} ]}
+                                            <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, {borderTopLeftRadius: 12, borderBottomLeftRadius: 12} ]}
                                             onPress={() => setDetailActive(0)}
 
                                             >
@@ -764,7 +778,7 @@ export default function HomeScreen({ route }) {
                                             >
                                             <Text style={[styles.detailTabButtonText, detailActive === 1 ? { color: "white" } : null]}>Doctors</Text>
                                             </TouchableOpacity>
-                                        <TouchableOpacity style={[styles.detailTabButton, detailActive === 2 ? styles.tabActive : null, { borderTopRightRadius: 3, borderBottomRightRadius: 3 }]}
+                                        <TouchableOpacity style={[styles.detailTabButton, detailActive === 2 ? styles.tabActive : null, { borderTopRightRadius: 12, borderBottomRightRadius: 12 }]}
                                             onPress={() => setDetailActive(2)}
                                             >
                                                 <Text style={[styles.detailTabButtonText, detailActive === 2 ? {color: "white"} : null]}>Reviews</Text>
@@ -783,7 +797,11 @@ export default function HomeScreen({ route }) {
 
                             <ButtonTemplate
                                 title="Book an Appointment"
-                                buttonStyle={{ backgroundColor: "rgba(31,159,162,0.19)", marginTop: 10 }}
+                                buttonStyle={{
+                                    backgroundColor: 'transparent',
+                                    borderWidth: 1,
+                                    borderColor: "#00807f",
+                                    marginTop: 10 }}
                                 onPress={() => {
                                     
                                     navigation.navigate('Schedule', {
@@ -795,7 +813,7 @@ export default function HomeScreen({ route }) {
                                     setisClinicModalVisible(!isClinicModalVisible)
                                 }}
 
-                                textStyle={{ color: "#27ccd2" }}
+                                textStyle={{ color: "#00807f" }}
                             >
 
                             </ButtonTemplate>      
@@ -836,16 +854,16 @@ const styles = StyleSheet.create({
     homeSection: {
         rowGap: 10,
 
-        padding: 10,
+        padding: 12,
         // marginTop: 15,
-        borderRadius: 3, 
+        borderRadius: 12,
         backgroundColor: "white",
     },
     specialistBox: {
         // borderWidth: 2,
         borderWidth: 1,
         borderColor: "transparent",
-        borderRadius: 3,
+        borderRadius: 12,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor:"rgba(248, 248, 248, 1)",
@@ -857,16 +875,16 @@ const styles = StyleSheet.create({
         // width: 100,
     },
     clinicSectionContainer: {
-        borderTopLeftRadius: 3,
+        borderTopLeftRadius: 12,
         justifyContent: "center",
-        borderTopRightRadius: 3, 
-        backgroundColor: "#F5B041",
+        borderTopRightRadius: 12, 
+        backgroundColor: "#fe8b5c",
         paddingTop:2,
     },
     clinicSectionText: {
         color: "white",
 
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         fontFamily: "Poppins_600SemiBold",
         fontSize: 12,
     },
@@ -878,7 +896,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 1,
         columnGap: 5,
-        borderRadius: 3,
+        borderRadius: 12,
     },
     sectionTitle: {
         color: "white",
@@ -890,7 +908,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "red",
         marginTop: 10,
         flexDirection: 'row',
-        borderRadius: 3,
+        borderRadius: 12,
         backgroundColor: "white",
     },
     searchBarIcon: {
@@ -900,7 +918,7 @@ const styles = StyleSheet.create({
     },
     filterIcon: {
         backgroundColor: "#fe8b5c",
-        borderRadius: 3,
+        borderRadius: 12,
         alignSelf: "center",
         padding: 12
     },
@@ -952,7 +970,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     clinicModalContainer: {
-        backgroundColor: "#27ccd2",
+        backgroundColor: "#00807f",
         // height: HEIGHT,
        
         
@@ -967,25 +985,16 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
     },
     clinicMainContentContainer: {
-        borderTopLeftRadius: 20,
-
-        // flexGrow: 9,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
         flex: 1,
-        // marginBottom: 1,
-
-        // backgroundColor: "rgba(244, 244, 244, 1)",
         backgroundColor: "white",
         padding: 20,
     },
     clinicUpperContentContainer: {
-        // backgroundColor: "yellow",
-        // flexGrow: 1,
-        // flex: 0,
         flexShrink: 0, // Ensure this child does not shrink beyond its content size
         flexGrow: 0, // Prevent this child from growing beyond its content size
-        // backgroundColor: "#27ccd2",
-
+        
     },
     clinicDistanceContainer :{
         flexDirection: "row",
@@ -1016,7 +1025,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "white",
         backgroundColor: "#F8F9F9",
 
-        borderRadius: 3,
+        borderRadius: 12,
         flex: 1,
         
     },
@@ -1045,13 +1054,13 @@ const styles = StyleSheet.create({
     clinicReviewsContainer: {
         backgroundColor: "#F8F9F9",
         flex: 1,
-        borderRadius: 3,
+        borderRadius: 12,
         
     },
     reviewCard: {
         maxWidth: 200,
         padding: 10,
-        borderRadius: 3,
+        borderRadius: 12,
     },
     reviewsContainer: {
         rowGap: 10,
@@ -1071,7 +1080,7 @@ const styles = StyleSheet.create({
         paddingVertical: 1,
         paddingHorizontal: 6,
         alignItems: 'center',
-        borderRadius: 3,
+        borderRadius: 12,
         fontSize: 10,
         fontFamily: 'Poppins_600SemiBold',
         backgroundColor: "#A569BD"
@@ -1106,7 +1115,7 @@ const styles = StyleSheet.create({
         
     },
     clinicDoctorsContainer:{
-        borderRadius: 3,
+        borderRadius: 12,
         backgroundColor: "#F8F9F9"
     },
     doctorCard: {
@@ -1130,7 +1139,7 @@ const styles = StyleSheet.create({
         height: 70,
         width: 70,
         borderRadius: 75,
-        // borderColor: "#F5B041",
+        // borderColor: "#fe8b5c",
         // borderWidth: 2,
         overflow: "hidden"
     },
@@ -1148,8 +1157,8 @@ const styles = StyleSheet.create({
     detailTabButton: {
         flex: 1,
         height: 30,
-        backgroundColor: "#FEF5E7",
-        borderRadius: 3,
+        backgroundColor: "rgba(236,116,66,0.1)",
+        borderRadius: 12,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -1163,9 +1172,9 @@ const styles = StyleSheet.create({
         lineHeight: 17,
     },
     tabActive: {
-        backgroundColor: "#DC7633",
+        backgroundColor: "#fe8b5c",
         
-        borderRadius: 3,
+        borderRadius: 12,
     },
     headerGreetText: {
         paddingTop: 5,
@@ -1176,7 +1185,7 @@ const styles = StyleSheet.create({
     },
     homeHeader: {
         height: 60,
-        backgroundColor: "#27ccd2",
+        backgroundColor: "#00807f",
         // flex: 0,
         alignItems: "flex-start",
         justifyContent: "center",

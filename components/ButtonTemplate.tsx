@@ -35,7 +35,7 @@ export default function ButtonTemplate({
 const styles = StyleSheet.create({
     button: {
         backgroundColor: "#EEEEEE",
-        borderRadius: 3,
+        borderRadius: 12,
         height: 50,
         alignItems: "center",
         justifyContent: "center",

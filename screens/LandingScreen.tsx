@@ -27,7 +27,7 @@ export default function LandingScreen() {
     return (
         <View style={styles.container}>
        
-            <StatusBar backgroundColor="whitesmoke"></StatusBar>
+            <StatusBar backgroundColor="white"></StatusBar>
             <Image source={logoImg} style={styles.logoImg}></Image> 
             
             <View style={styles.buttonContainers}>
@@ -35,7 +35,7 @@ export default function LandingScreen() {
                 <ButtonTemplate
                     title={"Get Started"}
                     buttonStyle={[{ 
-                        backgroundColor: "#27ccd2"
+                        backgroundColor: "#00807f"
                      },styles.buttonLayout]}
                      
                     textStyle={{
@@ -52,12 +52,14 @@ export default function LandingScreen() {
                 <ButtonTemplate
                     title={"Login"}
                     buttonStyle={[{
-                        backgroundColor: "white",
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderColor: "#00807f",
                         marginTop: 10,
                     }, styles.buttonLayout]}
                     
                     textStyle={{
-                        color: "#27ccd2"
+                        color: "#00807f"
                     }}
 
                     
@@ -79,11 +81,11 @@ export default function LandingScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "whitesmoke",
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 30,
-        paddingVertical: 50
+        paddingVertical: 50,
+        backgroundColor: "white"
     },
     buttonContainers: {
         width: "100%"

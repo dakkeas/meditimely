@@ -78,7 +78,7 @@ export default function SignUpEmailScreen() {
     return (
         <View style={styles.container}>
 
-            <StatusBar backgroundColor="#27ccd2"></StatusBar>
+            <StatusBar backgroundColor="#00807f"></StatusBar>
             <Text style={styles.title}>Sign Up</Text>
             <Text style={styles.sectionInfoText}>
                 
@@ -123,11 +123,13 @@ export default function SignUpEmailScreen() {
             <ButtonTemplate
             title="Continue "
             buttonStyle={{
-                backgroundColor: "#27ccd2",
+                backgroundColor: 'transparent',
+                borderWidth: 1,
+                borderColor: "#00807f",
                 marginTop: 10
             }}
             textStyle={{
-                color: "white"
+                color: "#00807f"
             }}
             
 
@@ -197,7 +199,7 @@ export default function SignUpEmailScreen() {
 
 const styles = StyleSheet.create({
     pressableLoginText: {
-        color: "#27ccd2",
+        color: "#00807f",
         fontFamily: "Poppins_600SemiBold"
 
     },

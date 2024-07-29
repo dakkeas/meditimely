@@ -57,7 +57,7 @@ export default function SignUpInfoScreen({ route }) {
 
     const toggleActive = {
         backgroundColor: 'rgba(31, 159, 162, 0.19)',
-        borderColor: "#27ccd2"
+        borderColor: "#00807f"
     }
     
 
@@ -187,8 +187,8 @@ export default function SignUpInfoScreen({ route }) {
                         
                         <TouchableOpacity style={[styles.toggleOption, isMale ? toggleActive : null, {
                             
-                            borderTopLeftRadius: 3,
-                            borderBottomLeftRadius: 3,
+                            borderTopLeftRadius: 12,
+                            borderBottomLeftRadius: 12,
                         }]}
 
                             onPress={()=> {
@@ -200,8 +200,9 @@ export default function SignUpInfoScreen({ route }) {
                         </TouchableOpacity>
                             <TouchableOpacity
                             style={[styles.toggleOption, !isMale ? toggleActive : null, {
-                            borderTopRightRadius: 3,
-                            borderBottomRightRadius: 3,
+                            borderTopRightRadius: 12,
+                            borderBottomRightRadius: 12,
+                            // borderLeftWidth: 0,
                                 
                             }]}
                             onPress={()=> {
@@ -217,7 +218,7 @@ export default function SignUpInfoScreen({ route }) {
                 </View>
                 <View style={styles.checkboxContainer}>
                     <CheckBox
-                    color="#27ccd2"
+                    color="#00807f"
                     style={{
                         marginTop: 5,
                         color: "red" 
@@ -232,12 +233,14 @@ export default function SignUpInfoScreen({ route }) {
                     
                 </View>
                 <ButtonTemplate
-                title="Continue"
+                title="Sign Up"
                 buttonStyle={{
-                    backgroundColor: "#27ccd2"
+                    backgroundColor: 'transparent',
+                    borderWidth: 1,
+                    borderColor: "#00807f",
                 }}
                 textStyle={{
-                    color: "white",
+                    color: "#00807f",
                 }}
 
                 onPress={() => {

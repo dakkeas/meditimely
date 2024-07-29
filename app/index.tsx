@@ -16,6 +16,7 @@ import DiseasesScreen from "@/screens/DiseasesScreen";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AppointmentScreen from "@/screens/AppointmentsScreen";
 import SettingsScreen from "@/screens/SettingsScreen";
+import { Ionicons } from '@expo/vector-icons';
 // import MaterialCommunityIconsfrom '@expo/vector-icons/MaterialCommunityIcons';
 // import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -80,17 +81,25 @@ function MainScreen({props}) {
 
     return (
         <Tab.Navigator
+
         screenOptions={{
-            tabBarActiveTintColor: '#27ccd2',
+            tabBarActiveTintColor: '#00807f',
+            tabBarLabelStyle: {
+                fontFamily: "Poppins_400Regular",
+            },
             headerShown: false,
-            tabBarShowLabel: false,
             tabBarStyle: {
-                // borderTopRightRadius: 20,
-                // borderTopLeftRadius: 20,
                 elevation: 0,
-                position: "absolute"
-                // backgroundColor: "transparent l"
+                position: "absolute",
+                height: 55,
+                paddingVertical: 10,
+                paddingHorizontal: 0,
+            },
+            tabBarIconStyle: {
+                // position: "absolute",
+                
             }
+            
         }}
         
         >
@@ -101,10 +110,10 @@ function MainScreen({props}) {
             options={{
                 tabBarLabel: "Home",
                 tabBarIcon: ({color}) => (
-                            
-                            <MaterialIcons name="home" size={24} color={color} />
+                    <Ionicons name="home-outline" size={22} color={color} />    
+                            // <MaterialIcons name="home" size={24} color={color} />
                 ),
-                // tabBarColor: "#27ccd2",
+                // tabBarColor: "#00807f",
 
             }}
 
@@ -116,9 +125,10 @@ function MainScreen({props}) {
                 headerShown: true,
                 tabBarLabel: "Appointments",
                 tabBarIcon: ({ color }) => (
-                    <MaterialIcons name="list-alt" size={24} color={color} />
+                    // <MaterialIcons name="list-alt" size={24} color={color} />
+                    <Ionicons name="document-text-outline" size={22} color={color} />
                 ),
-                // tabBarColor: "#27ccd2",
+                // tabBarColor: "#00807f",
                 header: (props) => (
                     <View style={styles.appointmentsHeader}>
                         <View style={[styles.container]}>
@@ -139,9 +149,10 @@ function MainScreen({props}) {
                 headerShown: true,
                 tabBarLabel: "Settings",
                 tabBarIcon: ({ color }) => (
-                    <MaterialIcons name="settings" size={24} color={color} />
+                    // <MaterialIcons name="settings" size={24} color={color} />
+                    <Ionicons name="settings-outline" size={22} color={color}/>
                 ),
-                // tabBarColor: "#27ccd2",
+                // tabBarColor: "#00807f",
                 header: (props) => (
                     <View style={styles.appointmentsHeader}>
                         <View style={[styles.container]}>
@@ -172,7 +183,7 @@ function HomeScreenStack(props) {
                     headerTitle: "",
                     
                     headerStyle: {
-                        backgroundColor: "#27ccd2",
+                        backgroundColor: "#00807f",
                         
                     },
                     headerTintColor: "white",
@@ -180,7 +191,22 @@ function HomeScreenStack(props) {
             >
             </Stack.Screen>
 
-            <Stack.Screen name="Search" component={SearchScreen}></Stack.Screen>
+            <Stack.Screen name="Search" 
+            component={SearchScreen}
+            options={{
+                headerTitleAlign: "center",
+                headerTitle: "Search",
+                headerStyle: {
+                    backgroundColor: "#00807f"
+                },
+                headerTitleStyle: {
+                    fontSize: 16,
+                    fontFamily: "Poppins_600SemiBold"
+                },
+                headerTintColor: "white"
+
+            }}
+            ></Stack.Screen>
             <Stack.Screen 
             name="Specialists More Info" 
             component={SpecialistInfoStack}
@@ -193,7 +219,7 @@ function HomeScreenStack(props) {
                 headerTitleAlign: "center",
                 headerTitle: "Schedule an Appointment",
                 headerStyle: {
-                    backgroundColor: "#27ccd2"
+                    backgroundColor: "#00807f"
                 },
                 headerTitleStyle: {
                     fontSize: 16,
@@ -219,7 +245,7 @@ function SignUpStack(props) {
         <Stack.Navigator
         screenOptions={{
             headerStyle: {
-                backgroundColor: "#27ccd2",
+                backgroundColor: "#00807f",
             },
             headerTitle: "",
             headerTintColor: "white"
@@ -280,7 +306,7 @@ function LandingStack(props) {
                 options={{
                     headerShown: true,
                     headerStyle: {
-                        backgroundColor: "#27ccd2",
+                        backgroundColor: "#00807f",
                     },
                     headerTitle: "",
                     headerTintColor: "white",
@@ -364,7 +390,7 @@ const styles = StyleSheet.create({
     },
     appointmentsHeader: {
         height: 60,
-        backgroundColor: "#27ccd2",
+        backgroundColor: "#00807f",
         // flex: 0,
         alignItems: 'center',
         justifyContent: "flex-end",

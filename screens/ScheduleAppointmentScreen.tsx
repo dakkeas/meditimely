@@ -125,7 +125,7 @@ export default function ScheduleAppointmentScreen({route}) {
         >
             <View style={styles.container}>
 
-                <StatusBar backgroundColor="#27ccd2"></StatusBar>
+                <StatusBar backgroundColor="#00807f"></StatusBar>
                 
                 <View style={styles.sectionContainer}>
 
@@ -136,7 +136,7 @@ export default function ScheduleAppointmentScreen({route}) {
                     <View style={styles.calendarContainer}>
                         <CalendarPicker onDateChange={onDateChange}
                             width={WIDTH - 60}
-                            selectedDayColor="#FF8A5B"
+                            selectedDayColor="#fe8b5c"
                             selectedDayTextColor="white"
                             textStyle={{
                                 fontFamily: "Poppins_400Regular"
@@ -167,7 +167,7 @@ export default function ScheduleAppointmentScreen({route}) {
                                         searchPlaceholder="Search"
                                         placeholder="Select Time"
                                         boxStyles={{
-                                            borderRadius: 3,
+                                            borderRadius: 12,
                                             borderColor: "whitesmoke",
                                         }}
                                         dropdownTextStyles={{
@@ -175,7 +175,7 @@ export default function ScheduleAppointmentScreen({route}) {
                                             fontSize: 12,
                                         }}
                                         dropdownStyles={{
-                                            borderRadius: 3,
+                                            borderRadius: 12,
                                             borderColor: "whitesmoke",
                                         }}
                                         inputStyles={{
@@ -198,7 +198,7 @@ export default function ScheduleAppointmentScreen({route}) {
                                 searchPlaceholder="Search"
                                 placeholder="Select Doctor"
                                 boxStyles={{
-                                    borderRadius: 3,
+                                    borderRadius: 12,
                                     borderColor: "whitesmoke",
                                 }}
                                 dropdownTextStyles={{
@@ -206,7 +206,7 @@ export default function ScheduleAppointmentScreen({route}) {
                                     fontSize: 12,
                                 }}
                                 dropdownStyles={{
-                                    borderRadius: 3,
+                                    borderRadius: 12,
                                     borderColor: "whitesmoke",
                                 }}
                                 inputStyles={{
@@ -262,10 +262,12 @@ export default function ScheduleAppointmentScreen({route}) {
                         
                     }}  
                     buttonStyle={{
-                        backgroundColor: "rgba(31,159,162,0.19)"
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderColor: "#00807f",
                     }}
                     textStyle={{
-                        color: "#27ccd2"
+                        color: "#00807f"
                     }}
                 ></ButtonTemplate>
             </View>
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
         // width: 180,
         fontFamily: 'Poppins_600SemiBold',
         // backgroundColor: "rgba(31,159,162,0.19)",
-        color:"#27ccd2"
+        color:"#00807f"
     },
     selectTimeTitle: {
         fontFamily: "Poppins_600SemiBold",
@@ -314,21 +316,21 @@ const styles = StyleSheet.create({
     },
     sectionContainer: {
         backgroundColor: "white",
-        borderRadius: 3,
+        borderRadius: 12,
         
     },
     scheduleSectionTextContainer: {
-        borderTopLeftRadius: 3,
+        borderTopLeftRadius: 12,
         justifyContent: "center",
-        borderTopRightRadius: 3,
-        backgroundColor: "#F5B041",
+        borderTopRightRadius: 12,
+        backgroundColor: "#fe8b5c",
         paddingTop: 2,
         
     },
     scheduleSectionText: {
         color: "white",
 
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         fontFamily: "Poppins_600SemiBold",
         fontSize: 12,
     },

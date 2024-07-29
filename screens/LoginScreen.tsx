@@ -39,7 +39,7 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor="#27ccd2"></StatusBar>
+            <StatusBar backgroundColor="#00807f"></StatusBar>
             <Text style={styles.title}>Welcome back!</Text>
             
             <Text style={styles.sectionInfoText}>
@@ -70,11 +70,14 @@ export default function LoginScreen() {
             <ButtonTemplate
                 title="Login"
                 buttonStyle={{
-                    backgroundColor: "#27ccd2",
+                    backgroundColor: 'transparent',
+                    borderWidth: 1,
+                    borderColor: "#00807f", 
+                    
                     marginTop: 10
                 }}
                 textStyle={{
-                    color: "white"
+                    color: "#00807f"
                 }}
 
                 onPress={() => {

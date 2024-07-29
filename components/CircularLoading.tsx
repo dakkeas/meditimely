@@ -9,10 +9,10 @@ import {
 } from "react-native"
 
 
-export default function CircularLoading() {
+export default function CircularLoading({color}) {
     return (
         <SafeAreaView style={styles.loadingContainer}>
-            <StatusBar backgroundColor="#1F9FA2"></StatusBar>
+            <StatusBar backgroundColor={color ? color : "#00807f"}></StatusBar>
             <ActivityIndicator size="large" color="grey">
             </ActivityIndicator>
             <View style={styles.container}>

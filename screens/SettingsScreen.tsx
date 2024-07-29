@@ -32,8 +32,15 @@ export default function SettingsScreen() {
                 <ButtonTemplate 
                 title='Logout' 
                 
-                buttonStyle = {{ backgroundColor: '#27ccd2'}}
-                textStyle={{color:"white"}}
+                    buttonStyle={{ 
+                        backgroundColor: 'transparent',
+                        borderWidth:1,
+                        borderColor: "#00807f",
+                        
+
+                        
+                    }}
+                    textStyle={{ color:"#00807f"}}
                 onPress={() => {
                     navigation.navigate('Landing')
                     console.log("Logout clicked")

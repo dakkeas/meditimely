@@ -15,6 +15,17 @@ export default function AppointmentScreen() {
     const [appointmentsList, setAppointmentsList] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [useruid, setUseruid] = useState('')
+    const [refreshing, setRefreshing] = useState(false)
+    const handleRefresh = () => {
+        setRefreshing(true)
+        onValue(appointmentsRef, (snapshot) => {
+            const data = snapshot.val();
+            setAppointmentsList(data)
+        })
+        setRefreshing(false)
+
+    }
+    
 
     useEffect(() => {
         const auth = getAuth();
@@ -22,7 +33,6 @@ export default function AppointmentScreen() {
 
         if (user) {
             setUseruid(user.uid);
-            console.log(useruid)
             
         } else {
             // setError('No user op in');
@@ -40,7 +50,6 @@ export default function AppointmentScreen() {
                     const data = snapshot.val();
                     setAppointmentsList(data)
                     setIsLoading(false)
-                    console.log(appointmentsList)
 
 
                 } else {
@@ -68,7 +77,6 @@ export default function AppointmentScreen() {
         try {
             await onValue(appointmentsRef, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data)
             });
             
             
@@ -101,12 +109,12 @@ export default function AppointmentScreen() {
                 <View style={styles.appointmentCardContainer}>
                     <View style={{ rowGap: 10 }}>
                         <View style={styles.doctorImage}>
-                            <Image style={{ height: 70, width: 70 }} source={doctorProfile} resizeMode="cover"></Image>
+                            <Image style={{ height: 50, width: 50 }} source={doctorProfile} resizeMode="cover"></Image>
                         </View>
                         <View style={styles.doctorRatingContainer}>
                             {/* <Text>Stars</Text>  */}
                             <MaterialIcons name="star" size={16} color="#FFD700" />
-                            <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#27ccd2", fontSize: 12, }}>{doctorRating}</Text>
+                            <Text style={{ fontFamily: "Poppins_600SemiBold", color: "#00807f", fontSize: 12, }}>{doctorRating}</Text>
                         </View>
                     </View>
                     <View style={styles.doctorInformationContainer}>
@@ -116,7 +124,7 @@ export default function AppointmentScreen() {
                             <Text style={styles.specializationText}>{specialty}</Text>
                         </View>
                         <View style={styles.bookingStatusContainer}>
-                            <Text style={{ color: "#27ccd2", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Status: </Text>
+                            <Text style={{ color: "#00807f", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Status: </Text>
                             <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                                 <Text style={styles.bookingStatusText}>{status}</Text>
                             </View>
@@ -160,7 +168,7 @@ export default function AppointmentScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.appointmentsTabContainer}>
-                <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, { borderTopLeftRadius: 3, borderBottomLeftRadius: 3 }]}
+                <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, { borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }]}
                     onPress={() => setDetailActive(0)}
                 >
                     <Text style={[styles.detailTabButtonText, detailActive === 0 ? { color: "white" } : null]}>Booked</Text>
@@ -172,6 +180,8 @@ export default function AppointmentScreen() {
                 </TouchableOpacity>
             </View>
                 <FlatList
+                    onRefresh={handleRefresh}
+                    refreshing={refreshing}
                     scrollEnabled
                     showsVerticalScrollIndicator={false}
                     ListFooterComponent={<View style={{ height: 75 }}></View>}
@@ -213,13 +223,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontSize: 10,
         fontFamily: 'Poppins_600SemiBold',
-        backgroundColor: "#52BE80"
+        borderRadius: 12,
+        backgroundColor: "#00807f",
     },
     bookingStatusText: {
         paddingVertical: 1,
         paddingHorizontal: 6,
         alignItems: 'center',
-        borderRadius: 3,
+        borderRadius: 12,
         fontSize: 10,
         fontFamily: 'Poppins_600SemiBold',
         color: "#F5B041"
@@ -233,7 +244,7 @@ const styles = StyleSheet.create({
         paddingVertical: 1,
         paddingHorizontal: 6,
         alignItems: 'center',
-        borderRadius: 3,
+        borderRadius: 12,
         fontSize: 10,
         fontFamily: 'Poppins_600SemiBold',
         backgroundColor: "#A569BD"
@@ -241,17 +252,17 @@ const styles = StyleSheet.create({
     doctorSpecialtyText: {
         fontFamily: "Poppins_400Regular",
         fontSize: 12,
-        color: "#27ccd2"
+        color: "#00807f"
     },
     doctorNameText: {
         
         fontSize: 12,
         fontFamily: "Poppins_400Regular",
-        color: "#27ccd2"
+        color: "#00807f"
     },
     clinicBookedText: {
         fontFamily: "Poppins_600SemiBold",
-        color: "#27ccd2"
+        color: "#00807f"
 
     },
     doctorInformationContainer: {
@@ -267,26 +278,29 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: "row",
         columnGap: 10,
-        backgroundColor: "rgba(31,159,162,0.19)",
-        borderRadius: 5,
+        backgroundColor: "transparent",
+        borderWidth: 1,
+        borderColor: '#00807f',
+        borderRadius: 12,
         // borderWidth: 1,
-        // borderColor: "#27ccd2",
+        // borderColor: "#00807f",
         paddingHorizontal: 20,
         
     },
     bookingsContainer: {
         rowGap: 10,
         borderRadius: 3,
-        backgroundColor: "white",
-        // height: 100,
+        
         padding: 10,
     },
     appointmentsTabContainer: {
         flexDirection: 'row',
         // backgroundColor: "white",
+        columnGap: 5,
         
     },
     container: {
+        backgroundColor: "white",
         rowGap: 10,
         paddingHorizontal: 20,
         paddingVertical: 20,
@@ -300,27 +314,29 @@ const styles = StyleSheet.create({
     detailsTabContainer: {
         flexDirection: "row",
         flex: 1,
-        columnGap: 5,
+        columnGap: 15,
 
     },
     detailTabButton: {
         flex: 1,
         height: 30,
-        backgroundColor: "#FEF5E7",
-        borderRadius: 3,
+        backgroundColor: "rgba(236,116,66,0.12)",
+        borderRadius: 12,
         justifyContent: "center",
         alignItems: "center",
     },
     tabActive: {
-        backgroundColor: "#DC7633",
+        backgroundColor: "#fe8b5c",
 
-        borderRadius: 3,
+        borderRadius: 12,    
     },
     doctorImage: {
+        borderWidth: 1,
+        borderColor: "#00807f",
         justifyContent: "center",
         alignItems: 'center',
-        height: 60,
-        width: 60,
+        height: 50,
+        width: 50,
         borderRadius: 75,
         overflow: "hidden"
     },

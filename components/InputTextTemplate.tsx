@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         height: 50,
         padding: 10,
-        borderRadius: 3,
+        borderRadius: 12,
+        paddingHorizontal: 15,
         fontFamily: "Poppins_400Regular",
         borderWidth: 1,
         borderColor: "grey"
