@@ -1,0 +1,37 @@
+[
+    {
+      "name": "Manila Doctors Hospital",
+      "latitude": 14.5914,
+      "longitude": 120.9822,
+      "latitude_delta": 0.0020,
+      "longitude_delta": 0.0040
+    },
+    {
+      "name": "Philippine General Hospital",
+      "latitude": 14.5767,
+      "longitude": 120.9870,
+      "latitude_delta": 0.0020,
+      "longitude_delta": 0.0040
+    },
+    {
+      "name": "St. Luke's Medical Center - Global City",
+      "latitude": 14.5580,
+      "longitude": 121.0594,
+      "latitude_delta": 0.0020,
+      "longitude_delta": 0.0040
+    },
+    {
+      "name": "Asian Hospital and Medical Center",
+      "latitude": 14.4644,
+      "longitude": 121.0208,
+      "latitude_delta": 0.0020,
+      "longitude_delta": 0.0040
+    },
+    {
+      "name": "The Medical City",
+      "latitude": 14.5911,
+      "longitude": 121.0583,
+      "latitude_delta": 0.0020,
+      "longitude_delta": 0.0040
+    }
+]
