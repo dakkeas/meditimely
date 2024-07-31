@@ -16,27 +16,29 @@ import { Dimensions,
     
 } from "react-native";
 // import { SearchBar } from "react-native-elements";
+import Feather from '@expo/vector-icons/Feather';
 import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import { CommonActions } from '@react-navigation/native';
 import ClinicCard from "@/components/clinicCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import specialistList from "../specialistList.json";
 import ButtonTemplate from "@/components/ButtonTemplate";
-const clinicImage = require('../assets/images/clinic_image3.jpg')
-const clinicImage2 = require('../assets/images/clinic_image2.jpg')
-const clinicImage3 = require('../assets/images/clinic_image3.jpg')
 import Reviews from "../Reviews.json"
-import { jsiConfigureProps } from "react-native-reanimated/lib/typescript/reanimated2/core";
+import { jsiConfigureProps, setShouldAnimateExitingForTag } from "react-native-reanimated/lib/typescript/reanimated2/core";
 import firebaseConfig from "@/firebase_setup";
 import { initializeApp } from "firebase/app";
 import { child, getDatabase, ref, set, onValue, get} from "firebase/database";
 import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
 import { getAuth, signOut} from "firebase/auth";
 import CircularLoading from "@/components/CircularLoading";
+import MapBox from "@/components/MapBox";
+import { useData } from "../DataContext"
+
+// import MapTemplate from "@/components/MapTemplate";
 // firebase setup
 const app = initializeApp(firebaseConfig);
 // const WIDTH = Dimensions.get('window').width;
@@ -45,6 +47,10 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const doctor = require("../assets/images/doctor3.jpg")
 // components
+const clinicImage = require('../assets/images/clinic_image3.jpg')
+const clinicImage2 = require('../assets/images/clinic_image2.jpg')
+const clinicImage3 = require('../assets/images/clinic_image3.jpg')
+
 
 const StarRating = (rating) => {
 
@@ -64,8 +70,9 @@ const StarRating = (rating) => {
 };
 
 const ClinicDetails = ({
-    clinicDataObject
+    clinicDataObject, setisClinicModalVisible
 }) => {
+    const navigation = useNavigation();
 
     const specialties = new Set(Object.values(clinicDataObject.doctors).map(doctor => doctor.specialty));
     return(
@@ -111,7 +118,21 @@ const ClinicDetails = ({
                                                 buttonStyle={{ backgroundColor: "rgba(0,128,127,0.19)", height: 40 }}
                                             textStyle={{ color: "#00807f" }}
                                             ></ButtonTemplate> */}
-                <TouchableOpacity>
+
+                    
+                    <View style={styles.mapContainer}>
+                        <MapBox></MapBox>
+                        <TouchableOpacity style={styles.openMaps}
+                        onPress={()=> {
+                            navigation.navigate('Map');
+                            setisClinicModalVisible(false);
+                        }}
+                        >
+                            <Feather name="external-link" size={18} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                <TouchableOpacity
+                >
                     <View style={styles.expandSectionContainer}>
                         <Text style={styles.expandSectionText}>View All</Text>
                     </View>
@@ -126,7 +147,6 @@ const ClinicDetails = ({
 const DoctorsDetails = ({
     clinicDataObject
 }) => {
-      const navigation = useNavigation();
 
     const doctorProfile = require("../assets/images/doctor_profile.jpg");
     return (
@@ -258,19 +278,28 @@ const SpecialistBox = ({
 }
 
 
-export default function HomeScreen({ route }) {
-    
+export default function HomeScreen({ route}) {
+    const { sharedData, setSharedData } = useData();
+
+    // set notification badge
+
+    useEffect(() => {
+        
+        const unsubscribe = navigation.addListener('focus', () => {
+            
+        })
+    })
     const specialistActive = {
         // color that sticks when a specialist is selected
     }
-
     const navigation = useNavigation();
+
     const [search, updateSearch] = useState('')
     // invoke navigation object
     const [specialistSelected, setSpecialistSelected] = useState('')
-    const [isClinicModalVisible, setisClinicModalVisible] = useState(false)
 
     const [errorMessage, setErrorMessage] = useState('')
+    const [isClinicModalVisible, setisClinicModalVisible] = useState(false)
 
     const [imgActive, setImgActive] = useState(0)
     onchange = (nativeEvent) => {
@@ -331,7 +360,7 @@ export default function HomeScreen({ route }) {
     
 
     // CLINIC MODAL VARIABLES
-    const [clinicModalIndex, setClinicModalIndex] = useState('')
+    const [selectedClinicModalID, setSelectedClinicModalID] = useState('')
     const [clinicModalObject, setClinicModalObject] = useState({})
     const renderDetailContent = (tab) => {
         switch (tab) {
@@ -339,6 +368,7 @@ export default function HomeScreen({ route }) {
                 return (
                     <ClinicDetails
                         clinicDataObject={clinicModalObject}
+                        setisClinicModalVisible={setisClinicModalVisible}
                     ></ClinicDetails>
                 )
             case 1:
@@ -457,8 +487,52 @@ export default function HomeScreen({ route }) {
         setRefreshing(false)
         
    } 
+   
+   const formattedClinicList = Object.keys(clinicList).map((clinicId) => {
+       const clinic = clinicList[clinicId];
+       return {
+           id: clinicId, // Unique identifier for each clinic
+           distance: clinic.distance,
+           doctors: clinic.doctors,
+           hospitalName: clinic.hospitalName,
+           location: clinic.location,
+           reviews: clinic.reviews
+       };
+    
+   })
+   const [noOfAppointments, setNoOfAppointments] = useState(undefined)
+    async function fetchNoAppointments() {
+        const appointmentsRef = ref(db, `appointments/${useruid}`);
+        try {
+            await onValue(appointmentsRef, (snapshot) => 
+                {
+                const data = snapshot.val();
+                setNoOfAppointments(Object.keys(data).length)
+                //
+            });
 
-     
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            console.error(error.message);
+
+        } finally {
+            // console.log('done!')
+        }
+    }
+
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            console.log("focus")
+            console.log(sharedData)
+            setSharedData(noOfAppointments)
+            console.log(sharedData)
+            fetchNoAppointments()
+            
+        })
+
+    }, [useruid])
     return (
             <View style={styles.homePageContainer}>
             <StatusBar backgroundColor="#00807f"></StatusBar>
@@ -495,7 +569,7 @@ export default function HomeScreen({ route }) {
                             <TouchableOpacity>
                                 
                                 <View style={styles.filterIcon}>
-                                    <MaterialIcons name="filter-list" size={24} color="white" />
+                                    <MaterialIcons name="filter-list" size={25} color="white" />
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -580,7 +654,7 @@ export default function HomeScreen({ route }) {
                                         </TouchableOpacity>
                                     )
                                  }}
-                                 keyExtractor={(item, index) => item.id.toString()}
+                                //  keyExtractor={(item, index) => item.id.toString()}
                                  >
                                  </FlatList>
 
@@ -602,19 +676,19 @@ export default function HomeScreen({ route }) {
                             </View>
                                  <FlatList
                                  
-                                 
-                                 data={clinicList}
+                                 data={formattedClinicList}
                                  initialNumToRender={2}
                                  horizontal
                                  showsHorizontalScrollIndicator={false}
                                  ItemSeparatorComponent={() => <View style={{width: 10}}></View>}
-                                 keyExtractor={(item,index)=> index.toString()}
                                  renderItem={({item, index})=> {
                                     return (
                                         <TouchableOpacity
+                                        
                                             onPress={() => {
+                                                // console.log(index)
                                                 setisClinicModalVisible(!isClinicModalVisible)
-                                                setClinicModalIndex(index)
+                                                setSelectedClinicModalID(item.id)
                                                 setClinicModalObject(item)
                                                 
                                             }}
@@ -664,18 +738,18 @@ export default function HomeScreen({ route }) {
 
                             refreshing = {refreshing}
                             onRefresh={handleRefresh}
-                            data={clinicList}
+                            data={formattedClinicList}
                             initialNumToRender={2}
                             horizontal
                             showsHorizontalScrollIndicator={false}
                             ItemSeparatorComponent={() => <View style={{ width: 10 }}></View>}
-                            keyExtractor={(item, index) => index.toString()}
+                            // keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item, index }) => {
                                 return (
                                     <TouchableOpacity
                                         onPress={() => {
                                             setisClinicModalVisible(!isClinicModalVisible)
-                                            setClinicModalIndex(index)
+                                            setSelectedClinicModalID(item.id)
                                             
                                             // console.log(clinicModalIndex)
                                             setClinicModalObject(item)
@@ -713,10 +787,11 @@ export default function HomeScreen({ route }) {
                 onRequestClose={() => setisClinicModalVisible(!isClinicModalVisible)}
                 animationType="slide"
                 presentationStyle="fullscreen"
-                //k transparent={true}
                 style={{
                     backgroundColor: "yellow"
                 }}
+
+
                 
                 >
                 <ScrollView
@@ -806,7 +881,7 @@ export default function HomeScreen({ route }) {
                                     
                                     navigation.navigate('Schedule', {
                                         clinicObject: clinicModalObject,
-                                        clinicId: clinicModalIndex,
+                                        clinicId: selectedClinicModalID,
                                         useruid: useruid,
                                         
                                     })
@@ -919,6 +994,7 @@ const styles = StyleSheet.create({
     filterIcon: {
         backgroundColor: "#fe8b5c",
         borderRadius: 12,
+        marginRight: 1,
         alignSelf: "center",
         padding: 12
     },
@@ -1191,6 +1267,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 19
     },
+    mapContainer: {
+        overflow: 'hidden',
+        height: 180,
+        flex: 1,
+        borderRadius: 12,
+    },
+    openMaps: {
+        position: "absolute",
+        right: 10,
+        top: 10,
+
+    }
+    
 
 })
 

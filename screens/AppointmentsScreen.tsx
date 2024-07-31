@@ -6,13 +6,15 @@ import { setPersistence } from "firebase/auth";
 const doctorProfile = require("../assets/images/doctor_profile.jpg");
 import { getAuth} from "firebase/auth";
 import CircularLoading from "@/components/CircularLoading";
-export default function AppointmentScreen() {
-
+import {useData} from "../DataContext"
+export default function AppointmentScreen({navigation}) {
+    const { sharedData, setSharedData } = useData();
     const auth = getAuth();
     const [detailActive, setDetailActive] = useState(0)
     const db = getDatabase();
+    
     const [isLoading, setIsLoading] = useState(true)
-    const [appointmentsList, setAppointmentsList] = useState('')
+    const [appointmentsList, setAppointmentsList] = useState({})
     const [errorMessage, setErrorMessage] = useState('')
     const [useruid, setUseruid] = useState('')
     const [refreshing, setRefreshing] = useState(false)
@@ -25,8 +27,18 @@ export default function AppointmentScreen() {
         setRefreshing(false)
 
     }
-    
 
+    // update badge counter
+
+    useEffect(() => {
+        
+        const unsubscribe = navigation.addListener('focus', () => {
+            navigation.setOptions({
+                tabBarBadge: undefined
+            })
+        })
+    })
+    
     useEffect(() => {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -50,11 +62,11 @@ export default function AppointmentScreen() {
                     const data = snapshot.val();
                     setAppointmentsList(data)
                     setIsLoading(false)
+                    // console.log(appointmentsList)
 
 
                 } else {
                     
-                    console.error('Unable to fetch appointments')
                     setErrorMessage('Unable to fetch appointments')
                     setIsLoading(false)
                 }
@@ -102,6 +114,7 @@ export default function AppointmentScreen() {
         doctorRating,
         hospitalName,
         time,
+        date,
         status,
         
     }) => {
@@ -123,7 +136,19 @@ export default function AppointmentScreen() {
                         <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                             <Text style={styles.specializationText}>{specialty}</Text>
                         </View>
-                        <View style={styles.bookingStatusContainer}>
+                        <View style={styles.bookingInformationContainer}>
+                            <Text style={{ color: "#00807f", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Date: </Text>
+                            <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                <Text style={styles.bookingStatusText}>{date}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.bookingInformationContainer}>
+                            <Text style={{ color: "#00807f", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Time: </Text>
+                            <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                <Text style={styles.bookingStatusText}>{time}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.bookingInformationContainer}>
                             <Text style={{ color: "#00807f", fontFamily: "Poppins_400Regular", fontSize: 12, }}>Status: </Text>
                             <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                                 <Text style={styles.bookingStatusText}>{status}</Text>
@@ -164,9 +189,20 @@ export default function AppointmentScreen() {
                 )
         }
     }
+        // const appoinmentsExistText = () => {
+
+        //     if (appointmentsList.length == undefined) {
+        //         return (
+        //             <Text style={styles.appointmentsExistText}>You have no current appointments</Text>
+        //         )
+        //         return null
+        //     }
+        // }
+    
 
     return (
         <View style={styles.container}>
+            <Button title="as" onPress={() => console.log(appointmentsList)}></Button>
             <View style={styles.appointmentsTabContainer}>
                 <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, { borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }]}
                     onPress={() => setDetailActive(0)}
@@ -179,12 +215,15 @@ export default function AppointmentScreen() {
                     <Text style={[styles.detailTabButtonText, detailActive === 1 ? { color: "white" } : null]}>Completed</Text>
                 </TouchableOpacity>
             </View>
+
+
+
                 <FlatList
                     onRefresh={handleRefresh}
                     refreshing={refreshing}
                     scrollEnabled
                     showsVerticalScrollIndicator={false}
-                    ListFooterComponent={<View style={{ height: 75 }}></View>}
+                    ListFooterComponent={<View style={{ height: 85 }}></View>}
                     data={Object.values(appointmentsList)}
                     ItemSeparatorComponent={() => <View style={{ height: 8 }}></View>}
                     renderItem={({ item }) => {
@@ -199,6 +238,7 @@ export default function AppointmentScreen() {
                                     doctorRating={item.doctorRating}
                                     hospitalName={item.hospitalName}
                                     time={item.time}
+                                    date={item.date}
                                     status={item.status}
                                 ></AppointmentCard>
                             </TouchableOpacity>
@@ -235,7 +275,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: "#F5B041"
     },
-    bookingStatusContainer: {
+    bookingInformationContainer: {
         marginTop: 8,
         flexDirection: "row",
     },
@@ -278,9 +318,9 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: "row",
         columnGap: 10,
-        backgroundColor: "transparent",
-        borderWidth: 1,
-        borderColor: '#00807f',
+        backgroundColor: "white",
+        // borderWidth: 1,
+        // borderColor: '#00807f',
         borderRadius: 12,
         // borderWidth: 1,
         // borderColor: "#00807f",
@@ -300,11 +340,16 @@ const styles = StyleSheet.create({
         
     },
     container: {
-        backgroundColor: "white",
+        // backgroundColor: "white",
         rowGap: 10,
         paddingHorizontal: 20,
         paddingVertical: 20,
         
+    },
+    putMiddle: {
+        
+        justifyContent: "center",
+        alignItems: 'center'
     },
     detailTabButtonText: {
         fontFamily: "Poppins_600SemiBold",
@@ -340,6 +385,15 @@ const styles = StyleSheet.create({
         borderRadius: 75,
         overflow: "hidden"
     },
+    
+    appointmentsExistText: {
+        fontFamily: "Poppins_600SemiBold",
+        textAlign: "center",
+        fontSize: 14,
+        marginTop: 10,
+
+    }
+    
 
 
 })

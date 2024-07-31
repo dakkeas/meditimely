@@ -20,12 +20,13 @@ import { Ionicons } from '@expo/vector-icons';
 // import MaterialCommunityIconsfrom '@expo/vector-icons/MaterialCommunityIcons';
 // import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import {DataProvider} from "../DataContext"
 const Tab = createBottomTabNavigator();
 
 import { BottomNavigation} from 'react-native-paper';
 import ScheduleAppointmentScreen from "@/screens/ScheduleAppointmentScreen";
 import { jsiConfigureProps } from "react-native-reanimated/lib/typescript/reanimated2/core";
+import MapTemplate from "@/components/MapTemplate";
 // const theme = useTheme();
 // theme.colors.secondaryContainer = "transparent"
 
@@ -118,10 +119,13 @@ function MainScreen({props}) {
             }}
 
             ></Tab.Screen>
-            <Tab.Screen 
+            <Tab.Screen
+            
+            
             name="Appointments" 
             component={AppointmentScreen}
             options={{
+                
                 headerShown: true,
                 tabBarLabel: "Appointments",
                 tabBarIcon: ({ color }) => (
@@ -170,6 +174,7 @@ function MainScreen({props}) {
 function HomeScreenStack(props) {
     return (
         <Stack.Navigator>
+
         
             <Stack.Screen
                 name = "Home Screen"
@@ -231,7 +236,21 @@ function HomeScreenStack(props) {
             
 
             ></Stack.Screen>
-            
+            <Stack.Screen 
+                options={{
+                    headerTitleAlign: "center",
+                    headerTitle: "Map",
+                    headerStyle: {
+                        backgroundColor: "#00807f"
+                    },
+                    headerTitleStyle: {
+                        fontSize: 16,
+                        fontFamily: "Poppins_600SemiBold"
+                    },
+                    headerTintColor: "white"
+
+                }}
+            name="Map" component={MapTemplate}></Stack.Screen> 
 
         </Stack.Navigator>
     )
@@ -340,31 +359,33 @@ export default function App() {
     }
 
     return (
+        <DataProvider>
+                <NavigationContainer
+                    independent={true}
 
-        <NavigationContainer
-       independent={true}
-       
-        >
-            <Stack.Navigator
-            screenOptions={{
-                headerShown: false
-            }}
-            >
+                >
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false
+                        }}
+                    >
 
-                <Stack.Screen name="Landing Stack" component={LandingStack}></Stack.Screen>
-                
-                <Stack.Screen
-                    options={{
-                        headerShown: false,
-                        headerBackVisible: false,
-                    }}
-                    name="Main" component={MainScreen}>
-                </Stack.Screen>
-                
+                        <Stack.Screen name="Landing Stack" component={LandingStack}></Stack.Screen>
 
-            </Stack.Navigator>
-            
-        </NavigationContainer>
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                                headerBackVisible: false,
+                            }}
+                            name="Main" component={MainScreen}>
+                        </Stack.Screen>
+
+
+                    </Stack.Navigator>
+
+                </NavigationContainer>
+        </DataProvider>
+
     )
 
 

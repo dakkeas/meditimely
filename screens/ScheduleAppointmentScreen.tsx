@@ -31,6 +31,7 @@ export default function ScheduleAppointmentScreen({route}) {
     };
 
 
+    
     const {clinicObject} = route.params
     const {clinicId} = route.params
     const {useruid} = route.params
@@ -38,9 +39,10 @@ export default function ScheduleAppointmentScreen({route}) {
     const startDate = selectedStartDate ? selectedStartDate.toString() : "";
      
     // map doctors for drop down format
-    const doctorData = Object.values(clinicObject.doctors).map(doctor => ({
-        key: doctor.id.toString(),
-        value: `${doctor.name}, ${doctor.specialty}`
+    
+    const doctorData = Object.keys(clinicObject.doctors).map(doctorID => ({
+        key: doctorID,
+        value: `${clinicObject.doctors[doctorID].name}, ${clinicObject.doctors[doctorID].specialty}`
     }));
 
     // const doctorDataObject = Object.values(clinicObject.doctors).reduce((acc, doctor) => {
@@ -52,7 +54,24 @@ export default function ScheduleAppointmentScreen({route}) {
     const doctorObject = Object.fromEntries(
         Object.values(clinicObject.doctors).map(item => [item.id, item])
     );
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ];
 
+    function formatDate(rawDate) {
+        return `${rawDate.getDate()} ${months[rawDate.getMonth()]} ${rawDate.getFullYear()}`
+    }
     
     
 
@@ -79,39 +98,7 @@ export default function ScheduleAppointmentScreen({route}) {
     const [errorMessage, setErrorMessage] = useState("")
     
     
-    async function writeAppointment(date, time, doctorIndex, clinicid, useruid) {
-        setIsLoading(true)
-        try {
-            // doctor id
-            // 
 
-            const id = Date.now();
-            await set(ref(db, 'appointments/' + `${useruid}/` + id), {
-                clinicID: clinicid,
-                doctorID: doctorObject[doctorIndex].id,
-                doctorName:  doctorObject[doctorIndex].name,
-                doctorRating: doctorObject[doctorIndex].rating,
-                doctorSpecialty: doctorObject[doctorIndex].specialty,
-                hospitalName: clinicObject.hospitalName,
-                date: date, 
-                time: time,
-                status: "PENDING",
-                
-            })
-            
-            
-            // setIsLoading(false) 
-        } catch (error){
-            // setIsLoading(false) 
-            console.error('Error writing document: ', error)
-            setErrorMessage('Failed to book appointment')
-
-        } finally {
-            setIsLoading(false);
-            
-        }
-    }
-    
     if (isLoading) {
         return (
             <CircularLoading></CircularLoading>
@@ -126,7 +113,11 @@ export default function ScheduleAppointmentScreen({route}) {
             <View style={styles.container}>
 
                 <StatusBar backgroundColor="#00807f"></StatusBar>
-                
+                 
+                 <Button title='debug button' onPress={() => {
+
+                 }}></Button>
+                 
                 <View style={styles.sectionContainer}>
 
                     <View style={styles.scheduleSectionTextContainer}>
@@ -238,7 +229,7 @@ export default function ScheduleAppointmentScreen({route}) {
                     title="Finish Appointment"
                     onPress={()=> {
 
-                        console.log(selectedDoctor)
+                        // console.log(selectedDoctor)
                         // console.log(doctorDataObject[selectedDoctor])
                         switch(true) {
                             case checkEmpty(selectedStartDate):
@@ -254,9 +245,43 @@ export default function ScheduleAppointmentScreen({route}) {
                                 console.log("booking...")
                                 
                                 setErrorMessage('')
-                                writeAppointment(selectedStartDate, selectedTime, selectedDoctor, clinicId, useruid)
+                                writeAppointment()
+                                async function writeAppointment() {
+                                    setIsLoading(true)
+                                    try {
+                                        // doctor id
+                                        // 
+
+                                        const id = Date.now();
+                                        await set(ref(db, 'appointments/' + `${useruid}/` + id), {
+                                            clinicID: clinicObject.id,
+                                            doctorID: selectedDoctor,
+                                            doctorName: clinicObject.doctors[selectedDoctor].name,
+                                            doctorRating: clinicObject.doctors[selectedDoctor].rating,
+                                            doctorSpecialty: clinicObject.doctors[selectedDoctor].specialty,
+                                            hospitalName: clinicObject.hospitalName,
+                                            date: selectedTime,
+                                            time: formatDate(selectedStartDate),
+                                            status: "PENDING",
+
+                                        })
+
+
+                                        // setIsLoading(false) 
+                                    } catch (error) {
+                                        // setIsLoading(false) 
+                                        console.error('Error writing document: ', error)
+                                        setErrorMessage('Failed to book appointment')
+
+                                    } finally {
+                                        setIsLoading(false);
+
+                                    }
+                                }
+
                                 navigation.navigate('Home Screen')
-                                Alert.alert('Booking Complete', `You have successfully created your appointment with ${doctorObject[selectedDoctor].name} at ${clinicObject.hospitalName}`)
+                                
+                                Alert.alert('Booking Complete', `You have successfully created your appointment with ${clinicObject.doctors[selectedDoctor].name} at ${clinicObject.hospitalName}`)
 
                         }
                         
