@@ -133,7 +133,7 @@ export default function AppointmentScreen({navigation}) {
                     <View style={styles.doctorInformationContainer}>
                         <Text style={styles.clinicBookedText}>{hospitalName}</Text>
                         <Text style={styles.doctorNameText}>{doctorName}</Text>
-                        <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                        <View style={{ justifyContent: "flex-start", alignItems: "flex-start", marginBottom: 5,}}>
                             <Text style={styles.specializationText}>{specialty}</Text>
                         </View>
                         <View style={styles.bookingInformationContainer}>
@@ -202,7 +202,7 @@ export default function AppointmentScreen({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Button title="as" onPress={() => console.log(appointmentsList)}></Button>
+        
             <View style={styles.appointmentsTabContainer}>
                 <TouchableOpacity style={[styles.detailTabButton, detailActive === 0 ? styles.tabActive : null, { borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }]}
                     onPress={() => setDetailActive(0)}
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
         color: "#F5B041"
     },
     bookingInformationContainer: {
-        marginTop: 8,
+        
         flexDirection: "row",
     },
     specializationText: {

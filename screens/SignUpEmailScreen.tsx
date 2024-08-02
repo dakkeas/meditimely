@@ -1,5 +1,5 @@
-import { StatusBar, SafeAreaView, View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
-import { useNavigation } from "expo-router";
+import { KeyboardAvoidingView, StatusBar, SafeAreaView, View, Text, StyleSheet, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import InputTextTemplate from "@/components/InputTextTemplate";
 import { useFonts, Poppins_400Regular, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import ButtonTemplate from "@/components/ButtonTemplate";
@@ -76,7 +76,7 @@ export default function SignUpEmailScreen() {
 
     
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView keyboardVerticalOffset={200} style={styles.container}>
 
             <StatusBar backgroundColor="#00807f"></StatusBar>
             <Text style={styles.title}>Sign Up</Text>
@@ -88,37 +88,44 @@ export default function SignUpEmailScreen() {
                 
                 <Text style={styles.errorMessage}>{errorMessage ? errorMessage : " "}</Text>
             </View>
+            <View>
+                <InputTextTemplate
+                    placeholder="juandelacruz@gmail.com"
+                    label="Email Address"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                ></InputTextTemplate>
+            </View>
 
-            <InputTextTemplate
-            placeholder="juandelacruz@gmail.com"
-            label="Email Address"
-            value = {email}
-            onChangeText = {setEmail}
-            autoCapitalize="none"
-            ></InputTextTemplate>
-            
-            <InputTextTemplate
-            placeholder="Enter your password"
-            label="Password"
-            value = {password}
-            onChangeText = {setPassword}
+            <View>
+                <InputTextTemplate
+                    placeholder="Enter your password"
+                    label="Password"
+                    value={password}
+                    onChangeText={setPassword}
 
-            autoCapitalize="none"
-            secureTextEntry={true}
-            //
-            autoCapitalize={false}
-            ></InputTextTemplate>
-            <InputTextTemplate
-            placeholder="Confirm your password"
-            label="Confirm Password"
-            secureTextEntry={true}
-            value = {confirmPassword}
-            onChangeText = {setConfirmPassword}
-            autoCapitalize="none"
-            
-            //
-            ></InputTextTemplate>
-            
+                    autoCapitalize="none"
+                    secureTextEntry={true}
+                    //
+                    autoCapitalize={false}
+                ></InputTextTemplate>
+            </View>
+
+            <View>
+                <InputTextTemplate
+                    placeholder="Confirm your password"
+                    label="Confirm Password"
+                    secureTextEntry={true}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    autoCapitalize="none"
+
+                //
+                ></InputTextTemplate>
+
+            </View>
+
 
             <ButtonTemplate
             title="Continue "
@@ -189,7 +196,7 @@ export default function SignUpEmailScreen() {
                 </TouchableOpacity>
                 
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

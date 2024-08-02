@@ -16,37 +16,11 @@ export default function MapBox() {
     const mapRef = useRef<any>();
     const navigation = useNavigation();
 
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity onPress={focusMap}>
-                    <View style={{ padding: 10 }}>
-                        <Text>FOCUS</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        })
-    }, [])
 
-
-    const focusMap = () => {
-        const pupManila = {
-            latitude: 14.5580,
-            longitude: 121.0594,
-            latitudeDelta: 1,
-            longitudeDelta: 1,
-        };
-
-        mapRef.current?.animateCamera({ center: pupManila, zoom: 12 })
-
-    }
     return (
-        <View style={styles.container}>
+        <View pointerEvents="none"  style={styles.container}>
             <MapView style={styles.map} provider={PROVIDER_GOOGLE}
-                // initialCamera={{INITIAL_REGION}}
                 initialRegion={INITIAL_REGION}
-                showsUserLocation
-                showsMyLocationButton
                 ref={mapRef}
             >
 

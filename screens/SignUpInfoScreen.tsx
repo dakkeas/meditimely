@@ -13,7 +13,7 @@ import { View,
 
     
 } from "react-native";
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import InputTextTemplate from "@/components/InputTextTemplate";
 import ButtonTemplate from "@/components/ButtonTemplate";
 import { Picker } from '@react-native-picker/picker';

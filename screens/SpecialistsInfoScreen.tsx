@@ -2,7 +2,7 @@ import { StatusBar, TouchableOpacity,FlatList, Pressable, View, Text, StyleSheet
 
 import { MaterialIcons } from '@expo/vector-icons';
 import specialistList from "../specialistList.json";
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SpecialistInfoScreen() {
     const navigation = useNavigation();

@@ -17,6 +17,7 @@ import { Dimensions,
 } from "react-native";
 // import { SearchBar } from "react-native-elements";
 import Feather from '@expo/vector-icons/Feather';
+
 import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import { CommonActions } from '@react-navigation/native';
@@ -37,6 +38,7 @@ import { getAuth, signOut} from "firebase/auth";
 import CircularLoading from "@/components/CircularLoading";
 import MapBox from "@/components/MapBox";
 import { useData } from "../DataContext"
+import filter from "lodash.filter"
 
 // import MapTemplate from "@/components/MapTemplate";
 // firebase setup
@@ -122,6 +124,7 @@ const ClinicDetails = ({
                     
                     <View style={styles.mapContainer}>
                         <MapBox></MapBox>
+                        
                         <TouchableOpacity style={styles.openMaps}
                         onPress={()=> {
                             navigation.navigate('Map');
@@ -326,13 +329,26 @@ export default function HomeScreen({ route}) {
     const [detailActive, setDetailActive] = useState(0)
     const [clinicList, setClinicList] = useState("")
 
-    function fetchClinicData() {
-        const nodeRef = ref(db, 'clinics');
 
-        onValue(nodeRef, (snapshot) => {
-            const data = snapshot.val();
-            setClinicList(data)
-        });
+    async function fetchClinicData() {
+        try{
+            setIsLoading(true)
+
+            const nodeRef = ref(db, 'clinics');
+
+            await onValue(nodeRef, (snapshot) => {
+                const data = snapshot.val();
+                setClinicList(data)
+            });
+            
+            console.log('clinic list fetched!')
+        } catch (error) {
+            console.log(error)
+            setErrorMessage(error)
+            setSearchError(error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
 
@@ -395,6 +411,7 @@ export default function HomeScreen({ route}) {
             <CircularLoading></CircularLoading>
         )
     }
+
 
 
     const auth = getAuth();
@@ -488,6 +505,7 @@ export default function HomeScreen({ route}) {
         
    } 
    
+   
    const formattedClinicList = Object.keys(clinicList).map((clinicId) => {
        const clinic = clinicList[clinicId];
        return {
@@ -500,6 +518,8 @@ export default function HomeScreen({ route}) {
        };
     
    })
+   
+   
    const [noOfAppointments, setNoOfAppointments] = useState(undefined)
     async function fetchNoAppointments() {
         const appointmentsRef = ref(db, `appointments/${useruid}`);
@@ -523,16 +543,54 @@ export default function HomeScreen({ route}) {
 
 
     useEffect(() => {
+        setData(formattedClinicList)
+        setFullData(formattedClinicList)
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log("focus")
-            console.log(sharedData)
             setSharedData(noOfAppointments)
-            console.log(sharedData)
+            
             fetchNoAppointments()
             
         })
 
     }, [useruid])
+
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const [data, setData] = useState([])
+    const [fullData, setFullData] = useState([])
+    const [searchError, setSearchError] = useState(null)
+    
+    const handleSearch = (query) => {
+        // console.log(ry)
+        setSearchQuery(query);
+
+        const formattedQuery = query.toLowerCase();
+
+        
+        const filteredData = filter(fullData , (clinic) => {
+            return contains(clinic, formattedQuery)
+            
+        })
+        setData(filteredData)
+        
+    }
+    
+    const contains = ({hospitalName, location}, query) => {
+        
+        // setSearchData(formattedClinicList)
+        if (query.length == 0) {
+            return false
+            
+        } else if (hospitalName.toLowerCase().includes(query)) {
+            // console.log(hospitalName)
+            // console.log(query)
+             
+            return true
+        } 
+        return false 
+    };
+
+
     return (
             <View style={styles.homePageContainer}>
             <StatusBar backgroundColor="#00807f"></StatusBar>
@@ -548,9 +606,6 @@ export default function HomeScreen({ route}) {
                             <TouchableOpacity
                                 onPress={() => {
 
-                                    navigation.navigate('Search', {
-                                        useruid: useruid
-                                    })
                                     
                                 }}
                                 style={styles.searchContainer}
@@ -561,18 +616,54 @@ export default function HomeScreen({ route}) {
                                 <TextInput
                                     placeholder="Search for clinics"
                                     style={styles.searchBar}
-                                    editable={false}
+                                    autoCorrect={false}
+                                    clearButtonMode="always"
+                                    value={searchQuery}
+                                    onChangeText={handleSearch}
+                                    // editable={false }
+                                    
                                 ></TextInput>
                             </TouchableOpacity>
 
-                            
-                            <TouchableOpacity>
+
+                            <TouchableOpacity
+
+                            >
                                 
                                 <View style={styles.filterIcon}>
                                     <MaterialIcons name="filter-list" size={25} color="white" />
                                 </View>
                             </TouchableOpacity>
                         </View>
+                    <View style={styles.searchResultsContainer}>
+
+                        <FlatList
+                            scrollEnabled={false}
+                            data={data}
+                            ItemSeparatorComponent={() => <View style={{ borderWidth: 0.2, borderColor: 'grey'}}></View>}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            console.log('clicked!')
+                                            setisClinicModalVisible(!isClinicModalVisible)
+                                            setSelectedClinicModalID(item.id)
+
+                                            // console.log(clinicModalIndex)
+                                            setClinicModalObject(item)
+                                        }}
+                                    >
+                                        <View style={[styles.searchResultTextContainer, {borderRadius: 0}]}>
+                                            <Text style={styles.searchResultTitle}>{item.hospitalName}</Text>
+                                            <Text style={styles.searchResultLocation}>{item.location}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                        >
+                        </FlatList>
+
+                    </View>
 
                         <View style={styles.homeSection}>
                             <View style={styles.sectionTextRowContainer}>
@@ -618,7 +709,8 @@ export default function HomeScreen({ route}) {
                                             
                                             setSpecialistSelected(item.name)
                                             navigation.navigate('Search', {
-                                                useruid: useruid
+                                                useruid: useruid,
+                                                clinicList: formattedClinicList
                                             })
                                             
                                             writeSpecialistSelected(specialistSelected)
@@ -695,6 +787,7 @@ export default function HomeScreen({ route}) {
                                         >
                                             <ClinicCard
                                                 imageSource={clinicImage}
+                                                // customStyling={{maxWidth: 200}}
                                                 clinicName= {item.hospitalName}
                                                 specialistsCount= {item.doctors.length}
                                                 patientsCount="0"
@@ -1278,6 +1371,29 @@ const styles = StyleSheet.create({
         right: 10,
         top: 10,
 
+    },
+    searchResultsContainer: {
+        marginTop: -5,
+        
+        // marginHorizontal: 10,
+    },
+    
+
+    searchResultTextContainer: {
+        backgroundColor: 'white',
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        paddingVertical: 3,
+    },
+    searchResultTitle: {
+        fontFamily: "Poppins_400Regular",
+    },
+    searchResultLocation: {
+        fontFamily: "Poppins_400Regular",
+        color: "grey",
+        fontSize: 10,
+        marginTop: -5
+        
     }
     
 

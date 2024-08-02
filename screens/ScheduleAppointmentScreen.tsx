@@ -114,10 +114,6 @@ export default function ScheduleAppointmentScreen({route}) {
 
                 <StatusBar backgroundColor="#00807f"></StatusBar>
                  
-                 <Button title='debug button' onPress={() => {
-
-                 }}></Button>
-                 
                 <View style={styles.sectionContainer}>
 
                     <View style={styles.scheduleSectionTextContainer}>

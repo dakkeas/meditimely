@@ -200,7 +200,7 @@ function HomeScreenStack(props) {
             component={SearchScreen}
             options={{
                 headerTitleAlign: "center",
-                headerTitle: "Search",
+                headerTitle: "Recommended Clinics",
                 headerStyle: {
                     backgroundColor: "#00807f"
                 },

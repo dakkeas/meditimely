@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 8,
         flex: 1,
-        maxWidth: 200,
+        // maxWidth: 200,
         height: 160,
         rowGap: 3,
     },
