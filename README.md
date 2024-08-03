@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/adaptive-icon.png" alt="Logo" width="120" height="120">
+    <img src="assets/images/adaptive-icon.png" alt="Logo" width="250" height="250">
   </a>
 
 <h3 align="center">MediTimely</h3>
@@ -115,15 +115,13 @@ Meditimely uses Firebase Authentication to manage user registration and authenti
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/landing_screen.png" alt="Logo" width="80" height="">
+    <img src="assets/images/screens/landing_screen.png" alt="Logo" width="200" height="">
+  </a>
+    <a href="https://github.com/github_username/repo_name">
+    <img src="assets/images/screens/signup_screen.jpg" alt="Logo" width="200" height="">
   </a>
 <div>
 
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/signup_screen.jpg" alt="Logo" width="80" height="">
-  </a>
-<div>
 
 - [ ] Intuitive Home Page with AI specialist recommendation
 
@@ -131,32 +129,21 @@ Meditimely allows users to view popular and nearest clinics, providing detailed 
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/homepage.jpg" alt="Logo" width="80" height="">
+    <img src="assets/images/screens/homepage.jpg" alt="Logo" width="200" height="">
   </a>
-<div>
-
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen1.jpg" alt="Logo" width="80" height="">
+    <a href="https://github.com/github_username/repo_name">
+    <img src="assets/images/screens/clinic_screen1.jpg" alt="Logo" width="200" height="">
   </a>
-<div>
-
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen1a.jpg" alt="Logo" width="80" height="">
+    <a href="https://github.com/github_username/repo_name">
+    <img src="assets/images/screens/clinic_screen1a.jpg" alt="Logo" width="200" height="">
   </a>
-<div>
-
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen2.jpg" alt="Logo" width="80" height="">
+    <a href="https://github.com/github_username/repo_name">
+    <img src="assets/images/screens/clinic_screen2.jpg" alt="Logo" width="200" height="">
   </a>
-<div>
-
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen3.jpg" alt="Logo" width="80" height="">
+    <a href="https://github.com/github_username/repo_name">
+    <img src="assets/images/screens/clinic_screen3.jpg" alt="Logo" width="200" height="">
   </a>
+  
 <div>
 
 - [ ] Book Appointments
@@ -165,13 +152,10 @@ Meditimely enables users to book appointments with their selected clinics direct
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/appointments_screen.jpg" alt="Logo" width="80" height="">
+    <img src="assets/images/screens/appointments_screen.jpg" alt="Logo" width="200" height="">
   </a>
-<div>
-
-<div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/appointments_screen2.jpg" alt="Logo" width="80" height="">
+    <img src="assets/images/screens/appointments_screen2.jpg" alt="Logo" width="200" height="">
   </a>
 <div>
 
