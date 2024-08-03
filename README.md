@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/adaptive-icon.png" alt="Logo" width="80" height="80">
+    <img src="assets/images/adaptive-icon.png" alt="Logo" width="120" height="120">
   </a>
 
 <h3 align="center">MediTimely</h3>
@@ -49,56 +49,25 @@
     <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
-
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
+<a href="https://reactnative.dev/docs/getting-started">
+  
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://shields.io/badge/react-black?logo=react&style=for-the-badge">
+  <img alt="Build with EAS" src="https://shields.io/badge/react-black?logo=react&style=for-the-badge">
+</picture>
+</a>
 
-* [![React][React.js]][React-url]
-* [![Firebase][Firebase]][Firebase-url]
+<a href="https://firebase.google.com/">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
+  <img alt="Build with EAS" src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
+</picture>
+</a>
 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a href="https://docs.expo.dev/eas">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/Build-fff.svg?style=for-the-badge&logo=EXPO&labelColor=fff&logoColor=000">
@@ -124,15 +93,16 @@ The project currently is deployed using Expo Go. Read the Expo documentation on 
    ```
 3. Modify Firebase config in firebase_setup.tsx file.
    ```sh
-  const firebaseConfig = {
-  apiKey: ####
-  authDomain: ####
-  databaseURL: ####
-  projectId: ####
-  storageBucket: ####
-  messagingSenderId: ####
-  appId: ####
-};
+    const firebaseConfig = {
+    apiKey: ####
+    authDomain: ####
+    databaseURL: ####
+    projectId: ####
+    storageBucket: ####
+    messagingSenderId: ####
+    appId: ####
+    }
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -145,13 +115,13 @@ Meditimely uses Firebase Authentication to manage user registration and authenti
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/landing_screen" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/landing_screen.png" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/homepage" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/signup_screen.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
@@ -161,31 +131,31 @@ Meditimely allows users to view popular and nearest clinics, providing detailed 
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/homepage.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/homepage.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen1.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/clinic_screen1.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen1a.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/clinic_screen1a.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen2.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/clinic_screen2.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/clinic_screen3.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/clinic_screen3.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
@@ -195,13 +165,13 @@ Meditimely enables users to book appointments with their selected clinics direct
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/appointments_screen.jpg.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/appointments_screen.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/images/screens/appointments_screen2.jpg.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/images/screens/appointments_screen2.jpg" alt="Logo" width="80" height="">
   </a>
 <div>
 
@@ -248,9 +218,9 @@ Project Link: [https://github.com/DakissCodes/meditimely)
 
 This project was part of an entry for PUP Hackathon: Uthack Ang Puhunan 2024. MediTimely was able to win 3rd runner up out of 18 teams. 
 
-* [Clarence Jay Fetalino](AI Developer)
-* [McAllen G. Fradejas](Graphic Designer)
-* [Dennesse Loura A. Condat](Researcher)
+Clarence Jay Fetalino (AI Developer)
+McAllen G. Fradejas (Graphic Designer)
+Dennesse Loura A. Condat (Researcher)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
