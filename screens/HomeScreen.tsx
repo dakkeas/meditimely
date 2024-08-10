@@ -246,6 +246,8 @@ const ClinicReviews = ({
                             </View>
                         )
 
+
+                        
                     }}
                 >
                 </FlatList>
